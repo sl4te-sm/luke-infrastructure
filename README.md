@@ -10,4 +10,5 @@ For more information, see the Creative Commons website: https://creativecommons.
 The infrastructure documented here could not be made possible without the work from the following:
 * Jamie Nguyen <j@jamielinux.com>: https://jamielinux.com/docs/openssl-certificate-authority/index.html
   - Instructions for using OpenSSL to bootstrap a private certificate authority
-  - I wrapped the code into scripts for automated deployment (see each shell script for modifications).
+  - Wrapped the code into scripts for automated deployment (see each shell script for modifications)
+  - Cleared default values for the root and intermediate CA config files (openssl.cnf)
