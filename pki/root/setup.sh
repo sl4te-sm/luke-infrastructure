@@ -1,7 +1,8 @@
 #!/bin/bash
 
+# Only run this once to setup the root CA
+
 # Prepare the directory
-mkdir /root/ca
 cd /root/ca || exit
 mkdir certs crl newcerts private
 chmod 700 private

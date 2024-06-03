@@ -1,7 +1,8 @@
 #!/bin/bash
 
+# Only run this once to setup the intermediate CA
+
 # Initialize the path
-mkdir /root/ca/intermediate
 cd /root/ca/intermediate || exit
 mkdir certs crl csr newcerts private
 chmod 700 private
