@@ -1,1 +1,1 @@
-pki/openssl.cnf
+pki/*/openssl.cnf

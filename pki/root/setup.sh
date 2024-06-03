@@ -13,9 +13,11 @@ key="private/ca.key.pem"
 cert="certs/ca.cert.pem"
 openssl genrsa -aes256 -out $key 4096
 chmod 400 private/ca.key.pem
-openssl req -config openssl.cnf \
+openssl req -new -x509 -sha256 \
+    -config openssl.cnf \
     -key $key \
-    -new -x509 -days 7300 -sha256 -extensions v3_ca \
+    -days 7300 \
+    -extensions v3_ca \
     -out $cert
 chmod 444 $cert
 
