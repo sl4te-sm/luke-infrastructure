@@ -11,3 +11,5 @@ openssl genrsa -aes256 -out $key 4096
 openssl req -new -sha256 \
     -config openssl.cnf \
     -key $key \
+    -out $ocspCsr
+
