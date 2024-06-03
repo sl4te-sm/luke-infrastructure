@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Credit to Jamie Nguyen: https://jamielinux.com/docs/openssl-certificate-authority/index.html
+
 # Create the intermediate certificate
 cd /root/ca || exit
 rootCert="certs/ca.cert.pem"
