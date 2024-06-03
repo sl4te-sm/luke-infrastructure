@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Credit to Jamie Nguyen: https://jamielinux.com/docs/openssl-certificate-authority/index.html
+
 cd /root/ca/intermediate || exit
 
 # Create the OCSP key pair
