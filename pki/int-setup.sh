@@ -4,7 +4,10 @@
 # Only run this once to setup the intermediate CA
 
 # Initialize the path
-cd /root/ca/intermediate || exit
+rootPath="/root/ca/intermediate"
+mkdir $rootPath
+mv ./int-openssl.cnf "${rootPath}/openssl.cnf"
+cd /root/ca/intermediate || exit 1
 mkdir certs crl csr newcerts private
 chmod 700 private
 touch index.txt
