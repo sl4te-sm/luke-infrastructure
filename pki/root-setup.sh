@@ -4,8 +4,10 @@
 # Only run this once to setup the root CA
 
 # Prepare the directory
-cd /root/ca || exit
-mkdir certs crl newcerts private
+rootDir="/root/ca"
+mkdir $rootDir || exit 1
+cd $rootDir || exit 1
+mkdir certs crl newcerts private || exit 1
 chmod 700 private
 touch index.txt
 echo 1000 > serial
