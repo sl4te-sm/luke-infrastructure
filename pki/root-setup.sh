@@ -5,7 +5,8 @@
 
 # Prepare the directory
 rootDir="/root/ca"
-mkdir $rootDir || exit 1
+mkdir $rootDir
+mv ./root-openssl.cnf "${rootDir}/openssl.cnf"
 cd $rootDir || exit 1
 mkdir certs crl newcerts private || exit 1
 chmod 700 private
