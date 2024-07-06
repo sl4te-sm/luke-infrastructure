@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Credit to Jamie Nguyen: https://jamielinux.com/docs/openssl-certificate-authority/index.html
-# Only run this once to setup the root CA
-
 # Prepare the directory
 rootDir="/root/ca"
 mkdir $rootDir

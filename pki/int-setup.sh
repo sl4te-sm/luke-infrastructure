@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Credit to Jamie Nguyen: https://jamielinux.com/docs/openssl-certificate-authority/index.html
-# Only run this once to setup the intermediate CA
-
 # Initialize the path
 rootPath="/root/ca/intermediate"
 mkdir $rootPath
