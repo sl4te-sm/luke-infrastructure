@@ -7,3 +7,6 @@
         name: tar
         state: latest
 
+    - name: Install etcd
+      become: true
+      script: /home/luke/ansible/scripts/install_etcd.sh
