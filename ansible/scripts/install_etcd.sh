@@ -5,6 +5,11 @@ DOWNLOAD_URL=https://github.com/etcd-io/etcd/releases/download
 INSTALL_PATH=/usr/local/bin
 TEMP_PATH=/tmp/etcd-download-test
 
+# Check if installed first
+if [[ test -f ${INSTALL_PATH}/etcd -a test -f ${INSTALL_PATH}/etcdctl ]]; then
+  exit
+fi
+
 rm -f /tmp/etcd-${ETCD_VER}-linux-amd64.tar.gz
 rm -rf $TEMP_PATH && mkdir -p $TEMP_PATH
 
