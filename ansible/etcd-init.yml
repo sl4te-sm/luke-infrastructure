@@ -1,0 +1,9 @@
+- name: Configure etcd hosts
+  hosts: databases
+  tasks:
+    - name: Install tar
+      become: true
+      ansible.builtin.dnf:
+        name: tar
+        state: latest
+
