@@ -1,12 +1,17 @@
 - name: Install etcd hosts
   hosts: databases
+  become: true
   tasks:
     - name: Install tar
-      become: true
       ansible.builtin.dnf:
         name: tar
         state: latest
 
     - name: Install etcd
-      become: true
       script: /home/luke/ansible/scripts/install_etcd.sh
+
+    - name: Configure firewall ports
+      ansible.posix.firewalld:
+        port: 2379-2380/tcp
+        permanent: true
+        state: enabled
