@@ -1,4 +1,4 @@
-- name: Configure etcd hosts
+- name: Install etcd hosts
   hosts: databases
   tasks:
     - name: Install tar
