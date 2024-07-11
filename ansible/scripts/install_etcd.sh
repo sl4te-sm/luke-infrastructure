@@ -6,8 +6,9 @@ INSTALL_PATH=/usr/local/bin
 TEMP_PATH=/tmp/etcd-download-test
 
 # Check if installed first
-if [[ test -f ${INSTALL_PATH}/etcd -a test -f ${INSTALL_PATH}/etcdctl ]]; then
-  exit
+if [ -f ${INSTALL_PATH}/etcd ] && [ -f ${INSTALL_PATH}/etcdctl ]; then
+  echo "etcd already installed"
+  exit 0
 fi
 
 rm -f /tmp/etcd-${ETCD_VER}-linux-amd64.tar.gz
