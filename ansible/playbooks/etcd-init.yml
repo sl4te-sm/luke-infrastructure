@@ -15,3 +15,26 @@
         port: 2379-2380/tcp
         permanent: true
         state: enabled
+
+    - name: Configure etcd group
+      ansible.builtin.group:
+        name: etcd
+        state: present
+
+    - name: Configure etcd user
+      ansible.builtin.user:
+        name: etcd
+        group: etcd
+        shell: /sbin/nologin
+        system: true
+
+    - name: Configure etcd systemd service
+      ansible.builtin.file:
+        path: /var/lib/etcd
+        state: directory
+        owner: etcd
+        group: etcd
+        mode: '0775'
+
+    - name: Configure SELinux policy for etcd
+      script: /home/luke/ansible/scripts/etcd_selinux.sh
