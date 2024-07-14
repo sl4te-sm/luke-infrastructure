@@ -7,6 +7,11 @@
         name: tar
         state: latest
 
+    - name: Install cifs-utils
+      ansible.builtin.dnf:
+        name: cifs-utils
+        state: latest
+
     - name: Install etcd
       script: /home/luke/ansible/scripts/install_etcd.sh
 
@@ -42,19 +47,21 @@
     - name: Setup systemd service
       script: /home/luke/ansible/scripts/etcd_systemd.sh
 
-- name: Deploy etcd certificates
-  hosts: localhost
-  become: true
-  tasks:
-    - name: Deploy certs
-      script: /home/luke/ansible/scripts/etcd_certs.sh
+    - name: Configure fileshare mount path
+      ansible.builtin.file:
+        path: /mnt/servershare
+        state: directory
 
-      #- name: Start the etcd service
-      #hosts: databases
-      #become: true
-      #tasks:
-      #- name: start service
-      #ansible.builtin.systemd_service:
-      #  name: etcd
-      #  state: started
-      #  enabled: true
+    - name: Mount server fileshare
+      ansible.posix.mount:
+        path: /mnt/servershare
+        src: //172.16.21.10/servershare
+        fstype: cifs
+        state: mounted
+        opts: "credentials=/home/etcd/.cred,_netdev"
+
+    - name: Start the etcd service
+      ansible.builtin.systemd_service:
+        name: etcd
+        state: started
+        enabled: true
