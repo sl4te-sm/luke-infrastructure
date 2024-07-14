@@ -6,8 +6,14 @@ HOST_NAME=$(hostname -s)
 DATA_DIR=/var/lib/etcd
 
 # Verify that certificate files are present first
-if ! [ -f ${DATA_DIR}/.ssl/ca.crt ] || ! [ -f ${DATA_DIR}/.ssl/${HOST_NAME}.luke-domain.com.crt] || ! [ -f ${DATA_DIR}/.ssl/${HOST_NAME}.luke-domain.com.key ]; then
-    echo "Required certificate files missing"
+if ! [ -f ${DATA_DIR}/.ssl/ca.crt ]; then
+    echo "Missing trusted CA cert"
+    exit 1
+elif ! [ -f ${DATA_DIR}/.ssl/${HOST_NAME}.luke-domain.com.crt ]; then
+    echo "Missing host certificate"
+    exit 1
+elif ! [ -f ${DATA_DIR}/.ssl/${HOST_NAME}.luke-domain.com.key ]; then
+    echo "Missing host private key"
     exit 1
 fi
 
