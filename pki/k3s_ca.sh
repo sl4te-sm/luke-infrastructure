@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
 # Example K3s CA certificate generation script.
+# Source: https://github.com/k3s-io/k3s/blob/master/contrib/util/generate-custom-ca-certs.sh
+# Credit to the k3s team
 # 
 # This script will generate files sufficient to bootstrap K3s cluster certificate
 # authorities.  By default, the script will create the required files under
