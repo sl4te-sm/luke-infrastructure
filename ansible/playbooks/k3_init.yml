@@ -1,0 +1,13 @@
+- name: Setup K3s worker nodes
+  hosts: k3controlnodes
+  become: true
+  vars:
+    os_environment:
+      - key: K3S_DATASTORE_ENDPOINT
+        value: https://luke-etcdtop-1.luke-domain.com:2379,https://luke-etcdtop-2.luke-domain.com:2379,https://luke-etcdtpo-3.luke-domain.com:2379
+      - key: K3S_DATASTORE_CAFILE
+        value: /home/k3s/.ssl/ca.cert.pem
+      - key: K3S_DATASTORE_CERTFILE
+        value: /home/k3s/.ssl/{{ inventory_hostname }}.cert.pem
+      - key: K3S_DATASTORE_KEYFILE
+        value: /home/k3s/.ssl/{{ inventory_hostname }}.key.pem 
