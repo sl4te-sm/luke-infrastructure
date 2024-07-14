@@ -10,25 +10,25 @@
     - name: Install etcd
       script: /home/luke/ansible/scripts/install_etcd.sh
 
-    - name: Configure firewall ports
+    - name: Open firewall ports
       ansible.posix.firewalld:
         port: 2379-2380/tcp
         permanent: true
         state: enabled
 
-    - name: Configure etcd group
+    - name: Create etcd group
       ansible.builtin.group:
         name: etcd
         state: present
 
-    - name: Configure etcd user
+    - name: Create etcd user
       ansible.builtin.user:
         name: etcd
         group: etcd
         shell: /sbin/nologin
         system: true
 
-    - name: Configure etcd systemd service
+    - name: Create etcd data directory
       ansible.builtin.file:
         path: /var/lib/etcd
         state: directory
@@ -38,3 +38,23 @@
 
     - name: Configure SELinux policy for etcd
       script: /home/luke/ansible/scripts/etcd_selinux.sh
+
+    - name: Setup systemd service
+      script: /home/luke/ansible/scripts/etcd_systemd.sh
+
+- name: Deploy etcd certificates
+  hosts: localhost
+  become: true
+  tasks:
+    - name: Deploy certs
+      script: /home/luke/ansible/scripts/etcd_certs.sh
+
+      #- name: Start the etcd service
+      #hosts: databases
+      #become: true
+      #tasks:
+      #- name: start service
+      #ansible.builtin.systemd_service:
+      #  name: etcd
+      #  state: started
+      #  enabled: true
