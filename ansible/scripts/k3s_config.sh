@@ -25,4 +25,5 @@ curl -sfL https://get.k3s.io | sh -s - server \
   --token=${TOKEN} \
   --agent-token=${TOKEN} \
   --tls-san="${HOST_NAME}" \
-  --tls-san="${HOST_IP}"
+  --tls-san="${HOST_IP}" \
+  --server="https://luke-controltop-1.luke-domain.com:6443"
