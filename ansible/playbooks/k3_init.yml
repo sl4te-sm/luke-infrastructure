@@ -1,13 +1,38 @@
 - name: Setup K3s worker nodes
   hosts: k3controlnodes
   become: true
-  vars:
-    os_environment:
-      - key: K3S_DATASTORE_ENDPOINT
-        value: https://luke-etcdtop-1.luke-domain.com:2379,https://luke-etcdtop-2.luke-domain.com:2379,https://luke-etcdtpo-3.luke-domain.com:2379
-      - key: K3S_DATASTORE_CAFILE
-        value: /home/k3s/.ssl/ca.cert.pem
-      - key: K3S_DATASTORE_CERTFILE
-        value: /home/k3s/.ssl/{{ inventory_hostname }}.cert.pem
-      - key: K3S_DATASTORE_KEYFILE
-        value: /home/k3s/.ssl/{{ inventory_hostname }}.key.pem 
+  tasks:
+    - name: Enable apiserver port
+      ansible.posix.firewalld:
+        port: 6443/tcp
+        permanent: true
+        state: enabled
+
+    - name: Enable Flannel VXLAN port
+      ansible.posix.firewalld:
+        port: 8472/udp
+        permanent: true
+        state: enabled
+
+    - name: Enable Kubelet metrics port
+      ansible.posix.firewalld:
+        port: 10250/tcp
+        permanent: true
+        state: enabled
+
+    - name: Add pods to trusted zone
+      ansible.posix.firewalld:
+        zone: trusted
+        source: 10.42.0.0/16
+        permanent: true
+        state: enabled
+
+    - name: Add services to trusted zone
+      ansible.posix.firewalld:
+        zone: trusted
+        source: 10.43.0.0/16
+        permanent: true
+        state: enabled
+    
+    - name: Install k3s server node
+      script: /home/luke/ansible/scripts/k3s_config.sh
