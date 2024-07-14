@@ -33,6 +33,21 @@
         source: 10.43.0.0/16
         permanent: true
         state: enabled
-    
-    - name: Install k3s server node
-      script: /home/luke/ansible/scripts/k3s_config.sh
+
+    - name: localhost port
+      ansible.posix.firewalld:
+        port: 8080/tcp
+        permanent: true
+        state: enabled
+
+    - name: http port
+      ansible.posix.firewalld:
+        port: 80/tcp
+        permanent: true
+        state: enabled
+
+    - name: https port
+      ansible.posix.firewalld:
+        port: 443/tcp
+        permanent: true
+        state: enabled
