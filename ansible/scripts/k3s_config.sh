@@ -10,7 +10,7 @@ AGENT_TOKEN=""
 if ! [ -f /home/k3s/.ssl/${HOST_NAME}-chain.cert.pem ] || ! [ -f /home/k3s/.ssl/${HOST_NAME}.key.pem ] || ! [ -f /home/k3s/.ssl/ca.cert.pem ]; then
   echo "Missing certificate files for etcd auth"
   exit 1
-elif [ -f /etc/rancher/k3s/k3s.yaml ]; then
+elif [ -f /usr/local/bin/k3s-uninstall.sh ]; then
   echo "k3s already installed and configured"
   exit 0
 fi

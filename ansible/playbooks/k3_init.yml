@@ -51,3 +51,6 @@
         port: 443/tcp
         permanent: true
         state: enabled
+
+    - name: Install k3s
+      script: /home/luke/ansible/scripts/k3s_config.sh
