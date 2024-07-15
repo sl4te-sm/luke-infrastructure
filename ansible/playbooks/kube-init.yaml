@@ -1,67 +1,22 @@
-- name: Install etcd hosts
-  hosts: databases
+- name: Setup kubernetes control nodes
+  hosts: k8controlnodes
   become: true
   tasks:
-    - name: Install tar
-      ansible.builtin.dnf:
-        name: tar
-        state: latest
-
-    - name: Install cifs-utils
-      ansible.builtin.dnf:
-        name: cifs-utils
-        state: latest
-
-    - name: Install etcd
-      script: /home/luke/ansible/scripts/install_etcd.sh
-
-    - name: Open firewall ports
-      ansible.posix.firewalld:
-        port: 2379-2380/tcp
-        permanent: true
-        state: enabled
-
-    - name: Create etcd group
-      ansible.builtin.group:
-        name: etcd
+    - name: Enable IPv4 packet forwarding
+      ansible.posix.sysctl:
+        name: net.ipv4.ip_forward
+        value: '1'
+        sysctl_file: /etc/sysctl.d/k8s.conf
+        sysctl_set: true
         state: present
+        reload: true
 
-    - name: Create etcd user
-      ansible.builtin.user:
-        name: etcd
-        group: etcd
-        shell: /sbin/nologin
-        system: true
+    - name: Install prerequisite software
+      ansible.builtin.dnf:
+        name:
+          - tar
+          - wget
+        state: latest
 
-    - name: Create etcd data directory
-      ansible.builtin.file:
-        path: /var/lib/etcd
-        state: directory
-        owner: etcd
-        group: etcd
-        mode: '0775'
-
-    - name: Configure SELinux policy for etcd
-      script: /home/luke/ansible/scripts/etcd_selinux.sh
-
-    - name: Setup systemd service
-      script: /home/luke/ansible/scripts/etcd_systemd.sh
-
-    - name: Configure fileshare mount path
-      ansible.builtin.file:
-        path: /mnt/servershare
-        state: directory
-
-    - name: Mount server fileshare
-      ansible.posix.mount:
-        path: /mnt/servershare
-        src: //172.16.21.10/servershare
-        fstype: cifs
-        state: mounted
-        opts: "credentials=/home/etcd/.cred,_netdev"
-
-    - name: Start the etcd service
-      ansible.builtin.systemd_service:
-        name: etcd
-        state: started
-        enabled: true
+    - name: Install containerd
+      script: /home/luke/ansible/scripts/install_containerd.sh
