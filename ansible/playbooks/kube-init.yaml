@@ -13,14 +13,15 @@
 
     - name: Open control plane ports
       ansible.posix.firewalld:
-        ports:
-          - 6443/tcp
-          - 2379-2380/tcp
-          - 10250/tcp
-          - 10259/tcp
-          - 10257/tcp
+        port: "{{ item }}/tcp"
         permanent: true
         state: enabled
+      with_items:
+        - '6443'
+        - '2379-2380'
+        - '10250'
+        - '10259'
+        - '10257'
 
     - name: Install prerequisite software
       ansible.builtin.dnf:
