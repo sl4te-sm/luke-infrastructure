@@ -84,3 +84,165 @@ resource "proxmox_virtual_environment_vm" "k3s_control_node" {
 
 
 }
+
+resource "proxmox_virtual_environment_vm" "k3s_worker_node-1" {
+  name      = var.k3sWorkerNode1
+  node_name = var.proxmoxNodes[0]
+
+  initialization {
+
+    ip_config {
+      ipv4 {
+        address = var.k3sWorkerNode1Ip
+        gateway = var.gatewayIp
+      }
+    }
+
+    dns {
+      domain  = var.domainName
+      servers = var.dnsServerIp
+    }
+
+    user_account {
+      username = var.k3sNodeUsername
+      keys     = [var.publicKey]
+    }
+  }
+
+  disk {
+    datastore_id = "local-lvm"
+    file_id      = proxmox_virtual_environment_download_file.alma_cloud_image[0].id
+    interface    = "virtio0"
+    iothread     = true
+    discard      = "on"
+    size         = 40
+  }
+
+  network_device {
+    bridge = "vmbr0"
+  }
+
+  cpu {
+    architecture = "x86_64"
+    type         = "x86-64-v2-AES"
+    cores        = 4
+    numa         = true
+  }
+
+  memory {
+    dedicated = 10240
+    hugepages = 2
+  }
+
+  operating_system {
+    type = "l26"
+  }
+
+}
+
+resource "proxmox_virtual_environment_vm" "k3s_worker_node-2" {
+  name      = var.k3sWorkerNode2
+  node_name = var.proxmoxNodes[1]
+
+  initialization {
+
+    ip_config {
+      ipv4 {
+        address = var.k3sWorkerNode2Ip
+        gateway = var.gatewayIp
+      }
+    }
+
+    dns {
+      domain  = var.domainName
+      servers = var.dnsServerIp
+    }
+
+    user_account {
+      username = var.k3sNodeUsername
+      keys     = [var.publicKey]
+    }
+  }
+
+  disk {
+    datastore_id = "local-lvm"
+    file_id      = proxmox_virtual_environment_download_file.alma_cloud_image[1].id
+    interface    = "virtio0"
+    iothread     = true
+    discard      = "on"
+    size         = 40
+  }
+
+  network_device {
+    bridge = "vmbr0"
+  }
+
+  cpu {
+    architecture = "x86_64"
+    type         = "x86-64-v2-AES"
+    cores        = 2
+  }
+
+  memory {
+    dedicated = 3072
+  }
+
+  operating_system {
+    type = "l26"
+  }
+
+}
+
+resource "proxmox_virtual_environment_vm" "k3s_worker_node-3" {
+  name      = var.k3sWorkerNode3
+  node_name = var.proxmoxNodes[2]
+
+  initialization {
+
+    ip_config {
+      ipv4 {
+        address = var.k3sWorkerNode3Ip
+        gateway = var.gatewayIp
+      }
+    }
+
+    dns {
+      domain  = var.domainName
+      servers = var.dnsServerIp
+    }
+
+    user_account {
+      username = var.k3sNodeUsername
+      keys     = [var.publicKey]
+    }
+  }
+
+  disk {
+    datastore_id = "local-lvm"
+    file_id      = proxmox_virtual_environment_download_file.alma_cloud_image[2].id
+    interface    = "virtio0"
+    iothread     = true
+    discard      = "on"
+    size         = 40
+  }
+
+  network_device {
+    bridge = "vmbr0"
+  }
+
+  cpu {
+    architecture = "x86_64"
+    type         = "x86-64-v2-AES"
+    cores        = 4
+  }
+
+  memory {
+    dedicated = 3072
+  }
+
+  operating_system {
+    type = "l26"
+  }
+
+}
+
