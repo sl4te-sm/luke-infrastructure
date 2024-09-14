@@ -126,10 +126,12 @@ resource "proxmox_virtual_environment_vm" "k3s_worker_node-1" {
     architecture = "x86_64"
     type         = "x86-64-v2-AES"
     cores        = 4
+    numa         = true
   }
 
   memory {
     dedicated = 10240
+    hugepages = 2
   }
 
   operating_system {
