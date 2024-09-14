@@ -25,25 +25,46 @@ variable "k3sControlNodes" {
   type        = list(string)
   description = "Kubernetes control nodes"
 }
-/*
-variable "k3sWorkerNodes" {
-  type = list(string)
-  description = "Kubernetes worker nodes"
-}
-*/
 
 variable "k3sControlNodeIp" {
   type        = list(string)
   sensitive   = true
   description = "Kubernetes control node IP addresses"
 }
-/*
-variable "k3sWorkerNodeIp" {
-  type = list(string)
-  sensitive = true
-  description = "Kubernetes worker node IP addresses"
+
+variable "k3sWorkerNode1" {
+  type        = string
+  description = "Kubernetes worker node on host 1"
 }
-*/
+
+variable "k3sWorkerNode2" {
+  type        = string
+  description = "Kubernetes worker node on host 2"
+}
+
+variable "k3sWorkerNode3" {
+  type        = string
+  description = "Kubernetes worker node on host 3"
+}
+
+variable "k3sWorkerNode1Ip" {
+  type        = string
+  sensitive   = true
+  description = "Kubernetes worker node on host 1 IP address"
+}
+
+variable "k3sWorkerNode2Ip" {
+  type        = string
+  sensitive   = true
+  description = "Kubernetes worker node on host 2 IP address"
+}
+
+variable "k3sWorkerNode3Ip" {
+  type        = string
+  sensitive   = true
+  description = "Kubernetes worker node on host 3 IP address"
+}
+
 variable "gatewayIp" {
   type        = string
   sensitive   = true
