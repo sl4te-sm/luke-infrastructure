@@ -270,7 +270,8 @@ resource "proxmox_virtual_environment_container" "haproxy-container" {
     }
     hostname = var.haproxyContainers[count.index]
     user_account {
-      keys = [var.publicKey]
+      keys     = [var.publicKey]
+      password = var.proxyPassword
     }
   }
 
@@ -281,5 +282,9 @@ resource "proxmox_virtual_environment_container" "haproxy-container" {
   operating_system {
     template_file_id = proxmox_virtual_environment_download_file.alpine_lxc_image[count.index].id
     type             = "alpine"
+  }
+
+  network_interface {
+    name = "veth0"
   }
 }

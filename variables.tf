@@ -105,3 +105,9 @@ variable "haproxyContainerIp" {
   sensitive   = true
   description = "HAProxy Container IP Addresses"
 }
+
+variable "proxyPassword" {
+  type        = string
+  sensitive   = true
+  description = "HAProxy container password"
+}
