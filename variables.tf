@@ -94,3 +94,14 @@ variable "dnsServerIp" {
   sensitive   = true
   description = "DNS Server IP addresses"
 }
+
+variable "haproxyContainers" {
+  type        = list(string)
+  description = "HAProxy Container Hosts"
+}
+
+variable "haproxyContainerIp" {
+  type        = list(string)
+  sensitive   = true
+  description = "HAProxy Container IP Addresses"
+}
