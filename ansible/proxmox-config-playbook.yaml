@@ -1,0 +1,14 @@
+- name: Configure proxmox cluster
+  hosts: hypervisors
+  become: true
+  tasks:
+    - name: Trust root ca
+      copy:
+        src: ./server-ca.crt
+        dest: /usr/local/share/ca-certificates/server-ca.crt
+      register: copy_result
+
+    - name: Update CA trust if necessary
+      command: update-ca-certificates
+      when: copy_result.changed
+        

@@ -1,0 +1,11 @@
+- name: Configure HAProxy
+  hosts: proxies
+  become: true
+  tasks:
+    - name: Install HAProxy and keepalived
+      community.general.apk:
+        name: "{{ item }}"
+        update_cache: true
+      loop:
+        - haproxy
+        - keepalived
