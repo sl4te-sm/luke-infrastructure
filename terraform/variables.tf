@@ -43,7 +43,7 @@ variable "k3sControlNodeIp" {
   sensitive   = true
   description = "Kubernetes control node IP addresses"
 }
-/*
+
 variable "k3sWorkerNodes" {
   type        = list(string)
   description = "Kubernetes worker nodes"
@@ -53,7 +53,7 @@ variable "k3sWorkerNodeIp" {
   sensitive   = true
   description = "Kubernetes worker node IP addresses"
 }
-*/
+
 variable "gatewayIp" {
   type        = string
   sensitive   = true

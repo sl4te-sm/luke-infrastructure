@@ -9,13 +9,13 @@ k3sControlNodes = [
   "luke-controltop-2",
   "luke-controltop-3"
 ]
-/*
+
 k3sWorkerNodes = [
   "luke-kubetop-1",
   "luke-kubetop-2",
   "luke-kubetop-3"
 ]
-
+/*
 haproxyContainers = [
   "luke-proxytop-1",
   "luke-proxytop-2"

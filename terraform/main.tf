@@ -114,7 +114,7 @@ resource "proxmox_virtual_environment_vm" "k3s_control_node" {
     type = "l26"
   }
 }
-/*
+
 resource "proxmox_virtual_environment_vm" "k3s_worker_node" {
   count     = length(var.proxmoxNodes)
   name      = var.k3sWorkerNodes[count.index]
@@ -169,7 +169,7 @@ resource "proxmox_virtual_environment_vm" "k3s_worker_node" {
   }
 
 }
-
+/*
 #
 # Linux Containers
 #
