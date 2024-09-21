@@ -1,3 +1,15 @@
+variable "gcpProject" {
+  type        = string
+  sensitive   = true
+  description = "GCP Project name"
+}
+
+variable "stateBucketName" {
+  type        = string
+  sensitive   = true
+  description = "GCP bucket for remote state storage"
+}
+
 variable "proxmoxUsername" {
   type        = string
   sensitive   = true
@@ -31,40 +43,17 @@ variable "k3sControlNodeIp" {
   sensitive   = true
   description = "Kubernetes control node IP addresses"
 }
-
-variable "k3sWorkerNode1" {
-  type        = string
-  description = "Kubernetes worker node on host 1"
+/*
+variable "k3sWorkerNodes" {
+  type        = list(string)
+  description = "Kubernetes worker nodes"
 }
-
-variable "k3sWorkerNode2" {
-  type        = string
-  description = "Kubernetes worker node on host 2"
-}
-
-variable "k3sWorkerNode3" {
-  type        = string
-  description = "Kubernetes worker node on host 3"
-}
-
-variable "k3sWorkerNode1Ip" {
-  type        = string
+variable "k3sWorkerNodeIp" {
+  type        = list(string)
   sensitive   = true
-  description = "Kubernetes worker node on host 1 IP address"
+  description = "Kubernetes worker node IP addresses"
 }
-
-variable "k3sWorkerNode2Ip" {
-  type        = string
-  sensitive   = true
-  description = "Kubernetes worker node on host 2 IP address"
-}
-
-variable "k3sWorkerNode3Ip" {
-  type        = string
-  sensitive   = true
-  description = "Kubernetes worker node on host 3 IP address"
-}
-
+*/
 variable "gatewayIp" {
   type        = string
   sensitive   = true
@@ -94,7 +83,7 @@ variable "dnsServerIp" {
   sensitive   = true
   description = "DNS Server IP addresses"
 }
-
+/*
 variable "haproxyContainers" {
   type        = list(string)
   description = "HAProxy Container Hosts"
@@ -106,8 +95,25 @@ variable "haproxyContainerIp" {
   description = "HAProxy Container IP Addresses"
 }
 
-variable "proxyPassword" {
+variable "pkiContainer" {
+  type        = string
+  description = "OpenSSL PKI Container Host"
+}
+
+variable "pkiContainerIp" {
   type        = string
   sensitive   = true
-  description = "HAProxy container password"
+  description = "OpenSSL PKI Container IP Address"
 }
+
+variable "containerPassword" {
+  type        = string
+  sensitive   = true
+  description = "Container password"
+}
+
+variable "lxcInitScript" {
+  type        = list(string)
+  description = "Linux container initialization scripts"
+}
+*/
