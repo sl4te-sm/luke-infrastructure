@@ -114,7 +114,7 @@ resource "proxmox_virtual_environment_vm" "k3s_control_node" {
     type = "l26"
   }
 }
-/*
+
 resource "proxmox_virtual_environment_vm" "k3s_worker_node" {
   count     = length(var.proxmoxNodes)
   name      = var.k3sWorkerNodes[count.index]
@@ -169,21 +169,9 @@ resource "proxmox_virtual_environment_vm" "k3s_worker_node" {
   }
 
 }
-
 #
 # Linux Containers
 #
-
-resource "proxmox_virtual_environment_file" "proxy_init_script" {
-  count        = length(var.proxmoxNodes) - 1
-  content_type = "snippets"
-  datastore_id = "local"
-  node_name    = var.proxmoxNodes[count.index + 1]
-
-  source_file {
-    path = var.lxcInitScript[count.index]
-  }
-}
 
 resource "proxmox_virtual_environment_download_file" "alpine_lxc_image" {
   count        = length(var.proxmoxNodes)
@@ -232,9 +220,8 @@ resource "proxmox_virtual_environment_container" "pki_container" {
 }
 
 resource "proxmox_virtual_environment_container" "haproxy_container" {
-  count               = length(var.proxmoxNodes) - 1
-  node_name           = var.proxmoxNodes[count.index + 1]
-  hook_script_file_id = proxmox_virtual_environment_file.proxy_init_script[count.index].id
+  count     = length(var.proxmoxNodes) - 1
+  node_name = var.proxmoxNodes[count.index + 1]
 
   initialization {
     hostname = var.haproxyContainers[count.index]
@@ -270,4 +257,3 @@ resource "proxmox_virtual_environment_container" "haproxy_container" {
     name = "veth0"
   }
 }
-*/

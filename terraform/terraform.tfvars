@@ -9,7 +9,7 @@ k3sControlNodes = [
   "luke-controltop-2",
   "luke-controltop-3"
 ]
-/*
+
 k3sWorkerNodes = [
   "luke-kubetop-1",
   "luke-kubetop-2",
@@ -21,11 +21,4 @@ haproxyContainers = [
   "luke-proxytop-2"
 ]
 
-lxcInitScript = [
-  "./initScripts/pki.sh",
-  "./initScripts/mainProxy.sh",
-  "./initScripts/backupProxy.sh"
-]
-
 pkiContainer = "luke-pkitop"
-*/

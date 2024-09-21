@@ -43,7 +43,7 @@ variable "k3sControlNodeIp" {
   sensitive   = true
   description = "Kubernetes control node IP addresses"
 }
-/*
+
 variable "k3sWorkerNodes" {
   type        = list(string)
   description = "Kubernetes worker nodes"
@@ -53,7 +53,7 @@ variable "k3sWorkerNodeIp" {
   sensitive   = true
   description = "Kubernetes worker node IP addresses"
 }
-*/
+
 variable "gatewayIp" {
   type        = string
   sensitive   = true
@@ -83,7 +83,7 @@ variable "dnsServerIp" {
   sensitive   = true
   description = "DNS Server IP addresses"
 }
-/*
+
 variable "haproxyContainers" {
   type        = list(string)
   description = "HAProxy Container Hosts"
@@ -111,9 +111,3 @@ variable "containerPassword" {
   sensitive   = true
   description = "Container password"
 }
-
-variable "lxcInitScript" {
-  type        = list(string)
-  description = "Linux container initialization scripts"
-}
-*/
