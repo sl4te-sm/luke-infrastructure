@@ -15,17 +15,10 @@ k3sWorkerNodes = [
   "luke-kubetop-2",
   "luke-kubetop-3"
 ]
-/*
+
 haproxyContainers = [
   "luke-proxytop-1",
   "luke-proxytop-2"
 ]
 
-lxcInitScript = [
-  "./initScripts/pki.sh",
-  "./initScripts/mainProxy.sh",
-  "./initScripts/backupProxy.sh"
-]
-
 pkiContainer = "luke-pkitop"
-*/

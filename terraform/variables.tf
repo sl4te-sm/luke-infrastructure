@@ -83,7 +83,7 @@ variable "dnsServerIp" {
   sensitive   = true
   description = "DNS Server IP addresses"
 }
-/*
+
 variable "haproxyContainers" {
   type        = list(string)
   description = "HAProxy Container Hosts"
@@ -111,9 +111,3 @@ variable "containerPassword" {
   sensitive   = true
   description = "Container password"
 }
-
-variable "lxcInitScript" {
-  type        = list(string)
-  description = "Linux container initialization scripts"
-}
-*/

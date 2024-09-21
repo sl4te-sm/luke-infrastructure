@@ -2,3 +2,4 @@ secrets.auto.tfvars
 *tfstate*
 inventory.yaml
 .terraform*
+*.pem
