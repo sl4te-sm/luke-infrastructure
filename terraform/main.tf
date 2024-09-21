@@ -4,6 +4,16 @@ terraform {
       source  = "bpg/proxmox"
       version = "~> 0.64.0"
     }
+
+    google = {
+      source  = "hashicorp/google"
+      version = "~> 6.3.0"
+    }
+  }
+
+  backend "gcs" {
+    bucket = var.stateBucketName
+    prefix = "terraform/state"
   }
 
   required_version = "~> 1.8.1"
@@ -20,6 +30,28 @@ provider "proxmox" {
     agent = true
   }
 }
+
+provider "google" {
+  project = var.gcpProject
+}
+
+resource "google_storage_bucket" "stateBucket" {
+  name     = var.stateBucketName
+  location = "us-central1"
+
+  force_destroy               = false
+  public_access_prevention    = "enforced"
+  uniform_bucket_level_access = true
+
+  versioning {
+    enabled = true
+  }
+}
+
+
+#
+# Virtual machines configuration
+#
 
 resource "proxmox_virtual_environment_download_file" "alma_cloud_image" {
   count        = length(var.proxmoxNodes)
@@ -81,19 +113,18 @@ resource "proxmox_virtual_environment_vm" "k3s_control_node" {
   operating_system {
     type = "l26"
   }
-
-
 }
-
-resource "proxmox_virtual_environment_vm" "k3s_worker_node-1" {
-  name      = var.k3sWorkerNode1
-  node_name = var.proxmoxNodes[0]
+/*
+resource "proxmox_virtual_environment_vm" "k3s_worker_node" {
+  count     = length(var.proxmoxNodes)
+  name      = var.k3sWorkerNodes[count.index]
+  node_name = var.proxmoxNodes[count.index]
 
   initialization {
 
     ip_config {
       ipv4 {
-        address = var.k3sWorkerNode1Ip
+        address = var.k3sWorkerNodeIp[count.index]
         gateway = var.gatewayIp
       }
     }
@@ -111,7 +142,7 @@ resource "proxmox_virtual_environment_vm" "k3s_worker_node-1" {
 
   disk {
     datastore_id = "local-lvm"
-    file_id      = proxmox_virtual_environment_download_file.alma_cloud_image[0].id
+    file_id      = proxmox_virtual_environment_download_file.alma_cloud_image[count.index].id
     interface    = "virtio0"
     iothread     = true
     discard      = "on"
@@ -131,7 +162,6 @@ resource "proxmox_virtual_environment_vm" "k3s_worker_node-1" {
 
   memory {
     dedicated = 10240
-    hugepages = 2
   }
 
   operating_system {
@@ -140,138 +170,50 @@ resource "proxmox_virtual_environment_vm" "k3s_worker_node-1" {
 
 }
 
-resource "proxmox_virtual_environment_vm" "k3s_worker_node-2" {
-  name      = var.k3sWorkerNode2
-  node_name = var.proxmoxNodes[1]
+#
+# Linux Containers
+#
 
-  initialization {
+resource "proxmox_virtual_environment_file" "proxy_init_script" {
+  count        = length(var.proxmoxNodes) - 1
+  content_type = "snippets"
+  datastore_id = "local"
+  node_name    = var.proxmoxNodes[count.index + 1]
 
-    ip_config {
-      ipv4 {
-        address = var.k3sWorkerNode2Ip
-        gateway = var.gatewayIp
-      }
-    }
-
-    dns {
-      domain  = var.domainName
-      servers = var.dnsServerIp
-    }
-
-    user_account {
-      username = var.k3sNodeUsername
-      keys     = [var.publicKey]
-    }
+  source_file {
+    path = var.lxcInitScript[count.index]
   }
-
-  disk {
-    datastore_id = "local-lvm"
-    file_id      = proxmox_virtual_environment_download_file.alma_cloud_image[1].id
-    interface    = "virtio0"
-    iothread     = true
-    discard      = "on"
-    size         = 40
-  }
-
-  network_device {
-    bridge = "vmbr0"
-  }
-
-  cpu {
-    architecture = "x86_64"
-    type         = "x86-64-v2-AES"
-    cores        = 2
-  }
-
-  memory {
-    dedicated = 3072
-  }
-
-  operating_system {
-    type = "l26"
-  }
-
-}
-
-resource "proxmox_virtual_environment_vm" "k3s_worker_node-3" {
-  name      = var.k3sWorkerNode3
-  node_name = var.proxmoxNodes[2]
-
-  initialization {
-
-    ip_config {
-      ipv4 {
-        address = var.k3sWorkerNode3Ip
-        gateway = var.gatewayIp
-      }
-    }
-
-    dns {
-      domain  = var.domainName
-      servers = var.dnsServerIp
-    }
-
-    user_account {
-      username = var.k3sNodeUsername
-      keys     = [var.publicKey]
-    }
-  }
-
-  disk {
-    datastore_id = "local-lvm"
-    file_id      = proxmox_virtual_environment_download_file.alma_cloud_image[2].id
-    interface    = "virtio0"
-    iothread     = true
-    discard      = "on"
-    size         = 40
-  }
-
-  network_device {
-    bridge = "vmbr0"
-  }
-
-  cpu {
-    architecture = "x86_64"
-    type         = "x86-64-v2-AES"
-    cores        = 4
-  }
-
-  memory {
-    dedicated = 3072
-  }
-
-  operating_system {
-    type = "l26"
-  }
-
 }
 
 resource "proxmox_virtual_environment_download_file" "alpine_lxc_image" {
-  count        = length(var.proxmoxNodes) - 1
+  count        = length(var.proxmoxNodes)
   content_type = "vztmpl"
   datastore_id = "local"
   url          = "http://download.proxmox.com/images/system/alpine-3.18-default_20230607_amd64.tar.xz"
-  node_name    = var.proxmoxNodes[count.index + 1]
+  node_name    = var.proxmoxNodes[count.index]
 }
 
-resource "proxmox_virtual_environment_container" "haproxy-container" {
-  count     = length(var.proxmoxNodes) - 1
-  node_name = var.proxmoxNodes[count.index + 1]
+resource "proxmox_virtual_environment_container" "pki_container" {
+  node_name = var.proxmoxNodes[0]
+
   initialization {
+    hostname = var.pkiContainer
+
     dns {
       domain  = var.domainName
       servers = var.dnsServerIp
     }
+
     ip_config {
       ipv4 {
-        address = var.haproxyContainerIp[count.index]
+        address = var.pkiContainerIp
         gateway = var.gatewayIp
       }
     }
-    hostname = var.haproxyContainers[count.index]
+
     user_account {
       keys     = [var.publicKey]
-      password = var.proxyPassword
+      password = var.containerPassword
     }
   }
 
@@ -280,7 +222,7 @@ resource "proxmox_virtual_environment_container" "haproxy-container" {
   }
 
   operating_system {
-    template_file_id = proxmox_virtual_environment_download_file.alpine_lxc_image[count.index].id
+    template_file_id = proxmox_virtual_environment_download_file.alpine_lxc_image[0].id
     type             = "alpine"
   }
 
@@ -288,3 +230,44 @@ resource "proxmox_virtual_environment_container" "haproxy-container" {
     name = "veth0"
   }
 }
+
+resource "proxmox_virtual_environment_container" "haproxy_container" {
+  count               = length(var.proxmoxNodes) - 1
+  node_name           = var.proxmoxNodes[count.index + 1]
+  hook_script_file_id = proxmox_virtual_environment_file.proxy_init_script[count.index].id
+
+  initialization {
+    hostname = var.haproxyContainers[count.index]
+
+    dns {
+      domain  = var.domainName
+      servers = var.dnsServerIp
+    }
+
+    ip_config {
+      ipv4 {
+        address = var.haproxyContainerIp[count.index]
+        gateway = var.gatewayIp
+      }
+    }
+
+    user_account {
+      keys     = [var.publicKey]
+      password = var.containerPassword
+    }
+  }
+
+  disk {
+    datastore_id = "local-lvm"
+  }
+
+  operating_system {
+    template_file_id = proxmox_virtual_environment_download_file.alpine_lxc_image[count.index + 1].id
+    type             = "alpine"
+  }
+
+  network_interface {
+    name = "veth0"
+  }
+}
+*/
