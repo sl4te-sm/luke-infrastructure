@@ -24,7 +24,6 @@ variable "proxmoxPassword" {
 
 variable "proxmoxEndpoint" {
   type        = string
-  sensitive   = true
   description = "Proxmox cluster endpoint URL"
 }
 
@@ -33,22 +32,21 @@ variable "proxmoxNodes" {
   description = "Proxmox nodes"
 }
 
-variable "k3sControlNodes" {
+variable "controlNodes" {
   type        = list(string)
   description = "Kubernetes control nodes"
 }
 
-variable "k3sControlNodeIp" {
+variable "controlNodeIps" {
   type        = list(string)
-  sensitive   = true
   description = "Kubernetes control node IP addresses"
 }
 
-variable "k3sWorkerNodes" {
+variable "workerNodes" {
   type        = list(string)
   description = "Kubernetes worker nodes"
 }
-variable "k3sWorkerNodeIp" {
+variable "workerNodeIps" {
   type        = list(string)
   sensitive   = true
   description = "Kubernetes worker node IP addresses"
@@ -56,31 +54,21 @@ variable "k3sWorkerNodeIp" {
 
 variable "gatewayIp" {
   type        = string
-  sensitive   = true
   description = "Gateway IP address"
 }
 
 variable "publicKey" {
   type        = string
-  sensitive   = true
   description = "Public authentication key"
-}
-
-variable "k3sNodeUsername" {
-  type        = string
-  sensitive   = true
-  description = "Username for kubernetes nodes"
 }
 
 variable "domainName" {
   type        = string
-  sensitive   = true
   description = "DNS search domain"
 }
 
 variable "dnsServerIp" {
   type        = list(string)
-  sensitive   = true
   description = "DNS Server IP addresses"
 }
 
@@ -91,7 +79,6 @@ variable "haproxyContainers" {
 
 variable "haproxyContainerIp" {
   type        = list(string)
-  sensitive   = true
   description = "HAProxy Container IP Addresses"
 }
 
@@ -102,7 +89,6 @@ variable "pkiContainer" {
 
 variable "pkiContainerIp" {
   type        = string
-  sensitive   = true
   description = "OpenSSL PKI Container IP Address"
 }
 
@@ -110,4 +96,9 @@ variable "containerPassword" {
   type        = string
   sensitive   = true
   description = "Container password"
+}
+
+variable "clusterName" {
+  type        = string
+  description = "K8s cluster name"
 }
