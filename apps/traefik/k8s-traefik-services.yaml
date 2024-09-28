@@ -4,7 +4,6 @@ metadata:
   name: traefik-dashboard-service
 
 spec:
-  type: NodePort
   ports:
     - port: 8080
       targetPort: dashboard
