@@ -11,5 +11,5 @@ spec:
       match: Host(`traefik.services.luke-domain.com`)
       priority: 10
       services:
-        - name: traefik-dashboard
+        - name: traefik-dashboard-service
           port: 8080
