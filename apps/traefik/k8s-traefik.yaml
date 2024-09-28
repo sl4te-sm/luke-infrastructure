@@ -22,13 +22,9 @@ spec:
           args:
             - --api.insecure
             - --providers.kubernetescrd
-            - --entryPoints.websecure.address=:443
             - --entryPoints.web.address=:80
-            - --entryPoints.websecure.http.tls
           ports:
             - name: web
               containerPort: 80
-            - name: websecure
-              containerPort: 443
             - name: dashboard
               containerPort: 8080
