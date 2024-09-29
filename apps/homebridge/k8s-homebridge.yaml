@@ -59,4 +59,3 @@ spec:
   ports:
   - port: 8581
     targetPort: 8581
-    nodePort: 8581
