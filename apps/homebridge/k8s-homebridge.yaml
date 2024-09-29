@@ -26,23 +26,23 @@ spec:
       labels:
         app: homebridge
     spec:
+      hostNetwork: true
       containers:
       - name: homebridge
         image: homebridge/homebridge:latest
         volumeMounts:
         - name: homebridge-data
           mountPath: /homebridge
-        readinessProbe:
-          httpGet:
-            path: /
-            port: 8581
+        livenessProbe:
+          exec:
+            command:
+              - /bin/sh
+              - -c
+              - curl --fail localhost:8581 || exit 1
           initialDelaySeconds: 300
           periodSeconds: 60
           timeoutSeconds: 2
           failureThreshold: 5
-        ports:
-          - containerPort: 8581
-            protocol: TCP
       volumes:
       - name: homebridge-data
         persistentVolumeClaim:
@@ -57,6 +57,5 @@ spec:
   selector:
     app: homebridge
   ports:
-  - port: 80
+  - port: 8581
     targetPort: 8581
-    protocol: TCP
