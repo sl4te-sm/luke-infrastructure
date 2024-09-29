@@ -1,0 +1,62 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: homebridge-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  volumeMode: Filesystem
+  resources:
+    requests:
+      storage: 5Gi
+  storageClassName: nfs-client
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: homebridge
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: homebridge
+  template:
+    metadata:
+      labels:
+        app: homebridge
+    spec:
+      containers:
+      - name: homebridge
+        image: homebridge/homebridge:latest
+        volumeMounts:
+        - name: homebridge-data
+          mountPath: /homebridge
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8581
+          initialDelaySeconds: 300
+          periodSeconds: 60
+          timeoutSeconds: 2
+          failureThreshold: 5
+        ports:
+          - containerPort: 8581
+            protocol: TCP
+      volumes:
+      - name: homebridge-data
+        persistentVolumeClaim:
+          claimName: homebridge-pvc
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: homebridge
+spec:
+  selector:
+    app: homebridge
+  ports:
+  - port: 80
+    targetPort: 8581
+    protocol: TCP
