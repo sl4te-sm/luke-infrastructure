@@ -26,7 +26,6 @@ spec:
       labels:
         app: homebridge
     spec:
-      hostNetwork: true
       containers:
       - name: homebridge
         image: homebridge/homebridge:latest
@@ -54,8 +53,10 @@ kind: Service
 metadata:
   name: homebridge
 spec:
+  type: NodePort
   selector:
     app: homebridge
   ports:
   - port: 8581
     targetPort: 8581
+    nodePort: 8581
