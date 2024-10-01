@@ -37,7 +37,7 @@ spec:
             command:
               - /bin/sh
               - -c
-              - curl --fail localhost:80 || exit 1
+              - curl --fail localhost:8581 || exit 1
           initialDelaySeconds: 300
           periodSeconds: 60
           timeoutSeconds: 2
@@ -53,7 +53,7 @@ spec:
           - name: HOMEBRIDGE_CONFIG_UI
             value: "1"
           - name: HOMEBRIDGE_CONFIG_UI_PORT
-            value: "80"
+            value: "8581"
           - name: TZ
             value: "America/Chicago"
       volumes:
