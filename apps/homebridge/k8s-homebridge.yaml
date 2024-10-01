@@ -56,8 +56,6 @@ spec:
             value: "80"
           - name: TZ
             value: "America/Chicago"
-        securityContext:
-          privileged: true
       volumes:
       - name: homebridge-data
         persistentVolumeClaim:
