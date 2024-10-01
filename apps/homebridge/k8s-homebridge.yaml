@@ -8,7 +8,7 @@ spec:
   volumeMode: Filesystem
   resources:
     requests:
-      storage: 5Gi
+      storage: 1Gi
   storageClassName: nfs-client
 
 ---
@@ -37,25 +37,55 @@ spec:
             command:
               - /bin/sh
               - -c
-              - curl --fail localhost:8581 || exit 1
+              - curl --fail localhost:80 || exit 1
           initialDelaySeconds: 300
           periodSeconds: 60
           timeoutSeconds: 2
           failureThreshold: 5
+        ports:
+          - containerPort: 80
+            protocol: TCP
+            name: homebridge-ui
+          - containerPort: 51467
+            protocol: TCP
+            name: homebridge-mdns
+        env:
+          - name: HOMEBRIDGE_CONFIG_UI
+            value: "1"
+          - name: HOMEBRIDGE_CONFIG_UI_PORT
+            value: "80"
+          - name: TZ
+            value: "America/Chicago"
+        securityContext:
+          privileged: true
       volumes:
       - name: homebridge-data
         persistentVolumeClaim:
           claimName: homebridge-pvc
+      hostNetwork: true
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: homebridge
+  name: homebridge-ui
+spec:
+  selector:
+    app: homebridge
+  ports:
+  - port: 80
+    targetPort: homebridge-ui
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: homebridge-mdns
 spec:
   type: NodePort
   selector:
     app: homebridge
   ports:
-  - port: 8581
-    targetPort: 8581
+  - port: 51467
+    targetPort: homebridge-mdns
+    nodePort: 31467
