@@ -71,4 +71,7 @@ spec:
   ports:
     - port: 80
       targetPort: homebridge-ui
-      protocol: TCP 
+      protocol: TCP
+  selector:
+    app: homebridge
+  sessionAffinity: None
