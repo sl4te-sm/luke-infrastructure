@@ -8,7 +8,9 @@ spec:
   routes:
     - kind: Rule
       match: Host(`homebridge.services.luke-domain.com`)
-      priority: 10
       services:
         - name: homebridge-ui
           port: 80
+  selector:
+    app: homebridge
+  sessionAffinity: None
