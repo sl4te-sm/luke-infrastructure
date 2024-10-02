@@ -1,30 +1,20 @@
-kind: Deployment
-apiVersion: apps/v1
+apiVersion: argoproj.io/v1alpha1
+kind: Application
 metadata:
-  name: traefik-deployment
-  labels:
-    app: traefik
-
+  name: traefik
 spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: traefik
-  template:
-    metadata:
-      labels:
-        app: traefik
-    spec:
-      serviceAccountName: traefik-account
-      containers:
-        - name: traefik
-          image: traefik:v3.1
-          args:
-            - --api.insecure
-            - --providers.kubernetesingress
-            - --entryPoints.web.address=:80
-          ports:
-            - name: web
-              containerPort: 80
-            - name: dashboard
-              containerPort: 8080
+  destination:
+    name: ''
+    namespace: traefik
+    server: https://kubernetes.default.svc
+  source:
+    path: ''
+    repoURL: https://traefik.github.io/charts
+    targetRevision: 32.0.0
+    chart: traefik
+  sources: []
+  project: default
+  syncPolicy:
+    automated: null
+    syncOptions:
+      - CreateNamespace=true
