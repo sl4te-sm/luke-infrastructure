@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: nfs-provisioner
+spec:
+  destination:
+    name: ''
+    namespace: nfs-provisioner
+    server: https://kubernetes.default.svc
+  source:
+    path: ''
+    repoURL: https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner/
+    targetRevision: 4.0.18
+    chart: nfs-subdir-external-provisioner
+    helm:
+      parameters:
+        - name: nfs.server
+          value: 172.16.20.10
+        - name: nfs.path
+          value: /media/servershare
+  sources: []
+  project: default
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
