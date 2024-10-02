@@ -61,3 +61,14 @@ spec:
         persistentVolumeClaim:
           claimName: homebridge-pvc
       hostNetwork: true
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: homebridge-ui
+spec:
+  ports:
+    - port: 80
+      targetPort: homebridge-ui
+      protocol: TCP 
