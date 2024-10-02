@@ -12,6 +12,12 @@ spec:
     repoURL: https://traefik.github.io/charts
     targetRevision: 32.0.0
     chart: traefik
+    helm:
+      parameters:
+        - name: deployment.kind
+          value: DaemonSet
+        - name: service.type
+          value: NodePort
   sources: []
   project: default
   syncPolicy:
