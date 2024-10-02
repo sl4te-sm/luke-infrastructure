@@ -70,8 +70,9 @@ metadata:
 spec:
   ports:
     - port: 80
-      targetPort: homebridge-ui
+      targetPort: 8581
       protocol: TCP
+      name: http
   selector:
     app: homebridge
   sessionAffinity: None
