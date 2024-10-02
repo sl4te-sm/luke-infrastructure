@@ -21,7 +21,6 @@ spec:
           image: traefik:v3.1
           args:
             - --api.insecure
-            - --providers.kubernetescrd
             - --providers.kubernetesingress
             - --entryPoints.web.address=:80
           ports:
