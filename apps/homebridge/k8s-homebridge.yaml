@@ -16,6 +16,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: homebridge
+  labels:
+    app: homebridge
 spec:
   replicas: 1
   selector:
@@ -45,7 +47,7 @@ spec:
         ports:
           - containerPort: 8581
             protocol: TCP
-            name: homebridge-ui
+            name: homebridge
           - containerPort: 51465
             protocol: TCP
             name: homebridge-mdns
@@ -73,6 +75,10 @@ spec:
       targetPort: 8581
       protocol: TCP
       name: http
+    - port: 443
+      targetPort: 8581
+      protocol: TCP
+      name: https
   selector:
     app: homebridge
   sessionAffinity: None
