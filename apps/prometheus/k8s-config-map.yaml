@@ -139,10 +139,12 @@ data:
           target_label: kubernetes_name
       - job_name: 'pve-exporter'
         static_configs:
-          - targets: ['pve-exporter.observability.svc.cluster.local:9221']
+          - targets:
+            - 172.16.20.10
+            - 172.16.20.11
+            - 172.16.20.12
         metrics_path: /pve
         params:
-          target: ['172.16.20.10']
           module: [default]
           cluster: ['1']
           node: ['1']
