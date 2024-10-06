@@ -36,9 +36,10 @@ data:
         - source_labels: [__meta_kubernetes_endpoints_name]
           regex: 'node-exporter'
           action: keep
-        - source_labels: [__meta_kubernetes_pod_node_name]
-          action: replace
-          target_label: node
+        - source_labels: [__meta_kubernetes_pod_host_ip, __address__]
+          target_label: instance
+          regex: (.*);.*:(\d+)
+          replacement: $1:$2
       - job_name: 'kubernetes-apiservers'
         kubernetes_sd_configs:
         - role: endpoints
