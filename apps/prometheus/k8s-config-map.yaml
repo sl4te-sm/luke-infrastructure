@@ -154,4 +154,4 @@ data:
           - source_labels: [__param_target]
             target_label: instance
           - target_label: __address__
-            replacement: pve-exporter.observability.svc.cluster.local:9221
+            replacement: pve-exporter.observability.svc:9221
