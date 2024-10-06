@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pve-exporter
+  labels:
+    app: pve-exporter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pve-exporter
+  template:
+    metadata:
+      labels:
+        app: pve-exporter
+    spec:
+      containers:
+        - name: pve-exporter
+          image: prompve/prometheus-pve-exporter
+          ports:
+            - containerPort: 9221
+          volumeMounts:
+            - mountPath: /etc/prometheus/pve.yml
+              name: pve-exporter-config-volume
+      volumes:
+        - name: pve-exporter-config-volume
+          configMap:
+            defaultMode: 420
+            name: pve-exporter-conf
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pve-exporter
+  annotations:
+    prometheus.io/scrape: 'true'
+    prometheus.io/port: '9221'
+spec:
+  selector:
+    app: pve-exporter
+  ports:
+    - port: 9221
+      targetPort: 9221
