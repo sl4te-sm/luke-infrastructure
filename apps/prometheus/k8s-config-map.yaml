@@ -33,12 +33,8 @@ data:
         kubernetes_sd_configs:
           - role: node
         relabel_configs:
-        - source_labels: [__meta_kubernetes_endpoints_name]
-          regex: 'node-exporter'
-          action: keep
         - source_labels: [__meta_kubernetes_node_name]
-          regex: (.*)
-          action: keep
+          target_label: hostname
       - job_name: 'kubernetes-apiservers'
         kubernetes_sd_configs:
         - role: endpoints
