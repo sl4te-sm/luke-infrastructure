@@ -20,7 +20,7 @@ spec:
           ports:
             - containerPort: 9221
           volumeMounts:
-            - mountPath: /etc/prometheus/pve.yml
+            - mountPath: /etc/prometheus/
               name: pve-exporter-config-volume
       volumes:
         - name: pve-exporter-config-volume
