@@ -19,15 +19,10 @@ spec:
           image: prompve/prometheus-pve-exporter
           ports:
             - containerPort: 9221
-          volumeMounts:
-            - mountPath: /etc/prometheus/
-              name: pve-exporter-config-volume
-      volumes:
-        - name: pve-exporter-config-volume
-          configMap:
-            defaultMode: 420
-            name: pve-exporter-conf
-
+          envFrom:
+            - secretRef:
+                name: pve-creds
+      
 ---
 apiVersion: v1
 kind: Service

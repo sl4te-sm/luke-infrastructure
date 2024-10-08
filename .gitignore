@@ -3,4 +3,4 @@ secrets.auto.tfvars
 inventory.yaml
 .terraform*
 *.pem
-apps/pve-exporter/k8s-config-map.yaml
+apps/pve-exporter/k8s-env.yaml
