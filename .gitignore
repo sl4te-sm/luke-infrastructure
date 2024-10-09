@@ -4,3 +4,4 @@ inventory.yaml
 .terraform*
 *.pem
 apps/pve-exporter/k8s-env.yaml
+apps/gitlab/k8s-secret.yaml
