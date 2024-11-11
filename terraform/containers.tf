@@ -1,20 +1,40 @@
 #
 # Linux Containers
 #
+resource "proxmox_virtual_environment_file" "hook_script" {
+  count        = length(var.proxmoxNodes)
+  content_type = "snippets"
+  datastore_id = "local"
+  node_name    = var.proxmoxNodes[count.index]
+  file_mode    = "0700"
 
-resource "proxmox_virtual_environment_download_file" "alpine_lxc_image" {
+  source_raw {
+    data      = <<-EOF
+      #!/bin/bash
+
+      dnf update -y
+      dnf install -y openssh-server
+      systemctl start sshd
+      EOF
+    file_name = "prepare-hook.sh"
+  }
+}
+
+resource "proxmox_virtual_environment_download_file" "lxc_image" {
   count        = length(var.proxmoxNodes)
   content_type = "vztmpl"
   datastore_id = "local"
-  url          = "http://download.proxmox.com/images/system/alpine-3.18-default_20230607_amd64.tar.xz"
+  url          = var.lxcImageUrl
   node_name    = var.proxmoxNodes[count.index]
 }
 
-resource "proxmox_virtual_environment_container" "pki_container" {
-  node_name = var.proxmoxNodes[0]
+resource "proxmox_virtual_environment_container" "lxc_container" {
+  count               = length(var.lxcContainers)
+  node_name           = var.proxmoxNodes[count.index]
+  hook_script_file_id = proxmox_virtual_environment_file.hook_script[count.index].id
 
   initialization {
-    hostname = var.pkiContainer
+    hostname = var.lxcContainers[count.index]
 
     dns {
       domain  = var.domainName
@@ -23,7 +43,7 @@ resource "proxmox_virtual_environment_container" "pki_container" {
 
     ip_config {
       ipv4 {
-        address = var.pkiContainerIp
+        address = var.lxcContainerIp[count.index]
         gateway = var.gatewayIp
       }
     }
@@ -39,47 +59,8 @@ resource "proxmox_virtual_environment_container" "pki_container" {
   }
 
   operating_system {
-    template_file_id = proxmox_virtual_environment_download_file.alpine_lxc_image[0].id
-    type             = "alpine"
-  }
-
-  network_interface {
-    name = "veth0"
-  }
-}
-
-resource "proxmox_virtual_environment_container" "haproxy_container" {
-  count     = length(var.proxmoxNodes) - 1
-  node_name = var.proxmoxNodes[count.index + 1]
-
-  initialization {
-    hostname = var.haproxyContainers[count.index]
-
-    dns {
-      domain  = var.domainName
-      servers = var.dnsServerIp
-    }
-
-    ip_config {
-      ipv4 {
-        address = var.haproxyContainerIp[count.index]
-        gateway = var.gatewayIp
-      }
-    }
-
-    user_account {
-      keys     = [var.publicKey]
-      password = var.containerPassword
-    }
-  }
-
-  disk {
-    datastore_id = "local-lvm"
-  }
-
-  operating_system {
-    template_file_id = proxmox_virtual_environment_download_file.alpine_lxc_image[count.index + 1].id
-    type             = "alpine"
+    template_file_id = proxmox_virtual_environment_download_file.lxc_image[count.index].id
+    type             = var.lxcImageType
   }
 
   network_interface {

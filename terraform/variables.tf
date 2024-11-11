@@ -72,24 +72,14 @@ variable "dnsServerIp" {
   description = "DNS Server IP addresses"
 }
 
-variable "haproxyContainers" {
+variable "lxcContainers" {
   type        = list(string)
-  description = "HAProxy Container Hosts"
+  description = "LXC Container Hosts"
 }
 
-variable "haproxyContainerIp" {
+variable "lxcContainerIp" {
   type        = list(string)
   description = "HAProxy Container IP Addresses"
-}
-
-variable "pkiContainer" {
-  type        = string
-  description = "OpenSSL PKI Container Host"
-}
-
-variable "pkiContainerIp" {
-  type        = string
-  description = "OpenSSL PKI Container IP Address"
 }
 
 variable "containerPassword" {
@@ -98,7 +88,20 @@ variable "containerPassword" {
   description = "Container password"
 }
 
+variable "lxcImageUrl" {
+  type        = string
+  description = "Download URL for load balancer container image"
+}
+
+variable "lxcImageType" {
+  type        = string
+  description = "Load balancer container type"
+  default     = "unmanaged"
+}
+
+
 variable "clusterName" {
   type        = string
   description = "K8s cluster name"
 }
+

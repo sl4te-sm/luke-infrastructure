@@ -4,12 +4,12 @@ proxmoxNodes = [
   "luke-vmtop-3"
 ]
 
-haproxyContainers = [
+lxcContainers = [
+  "luke-pkitop",
   "luke-proxytop-1",
   "luke-proxytop-2"
 ]
 
-pkiContainer    = "luke-pkitop"
 clusterName     = "luke-kubecluster"
 domainName      = "luke-domain.com"
 dnsServerIp     = ["172.16.10.10"]
@@ -40,10 +40,13 @@ workerNodes = [
   "luke-kubetop-3"
 ]
 
-haproxyContainerIp = [
+lxcContainerIp = [
+  "172.16.23.20/16",
   "172.16.23.10/16",
   "172.16.23.11/16"
 ]
 
-pkiContainerIp = "172.16.23.20/16"
-publicKey      = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPN4kOiyt9uHJAeE5CSlDe970yd8tTVherHD2LZ0c1uy"
+lxcImageUrl  = "http://download.proxmox.com/images/system/rockylinux-9-default_20221109_amd64.tar.xz"
+lxcImageType = "centos"
+
+publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPN4kOiyt9uHJAeE5CSlDe970yd8tTVherHD2LZ0c1uy"

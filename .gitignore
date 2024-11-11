@@ -5,3 +5,4 @@ inventory.yaml
 *.pem
 apps/pve-exporter/k8s-env.yaml
 apps/gitlab/k8s-secret.yaml
+apps/cilium/cilium.yaml

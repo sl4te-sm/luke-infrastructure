@@ -21,6 +21,21 @@ resource "talos_machine_configuration_apply" "cp_config_apply" {
   count                       = length(var.controlNodes)
   endpoint                    = var.controlNodeIps[count.index]
   node                        = var.controlNodeIps[count.index]
+  config_patches = [
+    yamlencode({
+      cluster = {
+        network = {
+          cni = {
+            name = "custom"
+            urls = ["http://files.luke-domain.com/cilium.yaml"]
+          }
+        }
+        proxy = {
+          disabled = true
+        }
+      }
+    })
+  ]
 }
 
 data "talos_machine_configuration" "machineconfig_worker" {
@@ -37,6 +52,21 @@ resource "talos_machine_configuration_apply" "worker_config_apply" {
   count                       = length(var.workerNodeIps)
   node                        = var.workerNodeIps[count.index]
   endpoint                    = var.workerNodeIps[count.index]
+  config_patches = [
+    yamlencode({
+      cluster = {
+        network = {
+          cni = {
+            name = "custom"
+            urls = ["http://files.luke-domain.com/cilium.yaml"]
+          }
+        }
+        proxy = {
+          disabled = true
+        }
+      }
+    })
+  ]
 }
 
 resource "talos_machine_bootstrap" "bootstrap" {

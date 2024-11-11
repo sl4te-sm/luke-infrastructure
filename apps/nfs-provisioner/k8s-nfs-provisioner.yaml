@@ -15,7 +15,7 @@ spec:
     helm:
       parameters:
         - name: nfs.server
-          value: 172.16.20.10
+          value: 172.16.20.21
         - name: nfs.path
           value: /media/servershare
   sources: []
