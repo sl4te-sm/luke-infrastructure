@@ -1,0 +1,34 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: proxmox-exporter
+spec:
+  destination:
+    name: ''
+    namespace: proxmox-exporter
+    server: https://kubernetes.default.svc
+  source:
+    path: ''
+    repoURL: https://starttoaster.github.io/proxmox-exporter
+    targetRevision: 0.2.3
+    chart: proxmox-exporter
+    helm:
+      parameters:
+        - name: prometheusRule.enabled
+          value: 'true'
+        - name: config.token
+          value: dummy
+        - name: config.endpoints
+          value: >-
+            https://luke-vmtop-1.luke-domain.com:8006/,https://luke-vmtop-2.luke-domain.com:8006/,https://luke-vmtop-3.luke-domain.com:8006/
+        - name: config.api_insecure
+          value: 'true'
+        - name: config.tokenID
+          value: proxmox-exporter@pve!proxmox-exporter
+        - name: serviceMonitor.enabled
+          value: 'true'
+  sources: []
+  project: default
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
