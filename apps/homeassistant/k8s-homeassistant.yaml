@@ -52,7 +52,7 @@ spec:
               protocol: TCP
             - name: mdns
               containerPort: 21064
-              protocol: UDP
+              protocol: TCP
           livenessProbe:
             failureThreshold: 3
             httpGet:
