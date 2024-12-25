@@ -103,7 +103,7 @@ spec:
     - web
   routes:
     - kind: Rule
-      match: Host('homeassistant.services.luke-domain.com')
+      match: Host(`homeassistant.services.luke-domain.com`)
       services:
         - name: home-assistant
           port: 80
