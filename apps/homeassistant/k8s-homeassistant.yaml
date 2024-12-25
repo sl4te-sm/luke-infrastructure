@@ -50,7 +50,7 @@ spec:
             - name: http
               containerPort: 8123
               protocol: TCP
-            - name: mDNS
+            - name: mdns
               containerPort: 21064
               protocol: UDP
           livenessProbe:
