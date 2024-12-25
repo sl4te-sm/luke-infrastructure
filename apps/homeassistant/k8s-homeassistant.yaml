@@ -75,6 +75,7 @@ spec:
       - name: home-assistant
         persistentVolumeClaim:
           claimName: home-assistant
+      hostNetwork: true
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
