@@ -53,6 +53,9 @@ spec:
             - name: mdns
               containerPort: 21064
               protocol: TCP
+            - name: autodiscovery
+              containerPort: 5353
+              protocol: UDP
           livenessProbe:
             failureThreshold: 3
             httpGet:
