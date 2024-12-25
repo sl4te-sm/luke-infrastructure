@@ -50,6 +50,9 @@ spec:
             - name: http
               containerPort: 8123
               protocol: TCP
+            - name: mDNS
+              containerPort: 21064
+              protocol: UDP
           livenessProbe:
             failureThreshold: 3
             httpGet:
