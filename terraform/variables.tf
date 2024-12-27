@@ -1,12 +1,10 @@
 variable "gcpProject" {
   type        = string
-  sensitive   = true
   description = "GCP Project name"
 }
 
 variable "stateBucketName" {
   type        = string
-  sensitive   = true
   description = "GCP bucket for remote state storage"
 }
 
@@ -25,6 +23,11 @@ variable "proxmoxPassword" {
 variable "proxmoxEndpoint" {
   type        = string
   description = "Proxmox cluster endpoint URL"
+}
+
+variable "bucketLocation" {
+  type        = string
+  description = "State bucket location"
 }
 
 variable "proxmoxNodes" {
@@ -46,9 +49,9 @@ variable "workerNodes" {
   type        = list(string)
   description = "Kubernetes worker nodes"
 }
+
 variable "workerNodeIps" {
   type        = list(string)
-  sensitive   = true
   description = "Kubernetes worker node IP addresses"
 }
 
@@ -99,9 +102,8 @@ variable "lxcImageType" {
   default     = "unmanaged"
 }
 
-
-variable "clusterName" {
+variable "proxmoxExporterPassword" {
   type        = string
-  description = "K8s cluster name"
+  sensitive   = true
+  description = "Password for proxmox exporter user"
 }
-

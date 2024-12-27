@@ -2,6 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: proxmox-exporter
+  namespace: argocd
 spec:
   destination:
     name: ''
@@ -17,7 +18,7 @@ spec:
         - name: prometheusRule.enabled
           value: 'true'
         - name: config.token
-          value: dummy
+          value: redacted
         - name: config.endpoints
           value: >-
             https://luke-vmtop-1.luke-domain.com:8006/,https://luke-vmtop-2.luke-domain.com:8006/,https://luke-vmtop-3.luke-domain.com:8006/
@@ -26,9 +27,11 @@ spec:
         - name: config.tokenID
           value: proxmox-exporter@pve!proxmox-exporter
         - name: serviceMonitor.enabled
-          value: 'true'
+          value: 'false'
   sources: []
   project: default
   syncPolicy:
     syncOptions:
       - CreateNamespace=true
+---
+

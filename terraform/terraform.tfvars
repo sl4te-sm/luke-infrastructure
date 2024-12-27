@@ -1,3 +1,6 @@
+stateBucketName = "luke-infrastructure-state"
+gcpProject      = "neural-orbit-361620"
+
 proxmoxNodes = [
   "luke-vmtop-1",
   "luke-vmtop-2",
@@ -5,17 +8,15 @@ proxmoxNodes = [
 ]
 
 lxcContainers = [
-  "luke-pkitop",
   "luke-proxytop-1",
   "luke-proxytop-2"
 ]
 
-clusterName     = "luke-kubecluster"
 domainName      = "luke-domain.com"
-dnsServerIp     = ["172.16.10.10"]
-gatewayIp       = "172.16.0.1"
-proxmoxEndpoint = "https://luke-vmtop-1.luke-domain.com:8006"
-
+dnsServerIp     = ["172.16.20.254"]
+gatewayIp       = "172.16.20.254"
+proxmoxEndpoint = "https://proxmox.services.luke-domain.com"
+bucketLocation  = "us-central1"
 controlNodes = [
   "luke-controltop-1",
   "luke-controltop-2",
@@ -23,15 +24,15 @@ controlNodes = [
 ]
 
 controlNodeIps = [
-  "172.16.21.10",
-  "172.16.21.11",
-  "172.16.21.12"
+  "172.16.20.20/24",
+  "172.16.20.21/24",
+  "172.16.20.22/24"
 ]
 
 workerNodeIps = [
-  "172.16.22.10",
-  "172.16.22.11",
-  "172.16.22.12"
+  "172.16.20.30/24",
+  "172.16.20.31/24",
+  "172.16.20.32/24"
 ]
 
 workerNodes = [
@@ -41,12 +42,10 @@ workerNodes = [
 ]
 
 lxcContainerIp = [
-  "172.16.23.20/16",
-  "172.16.23.10/16",
-  "172.16.23.11/16"
+  "172.16.20.40/24",
+  "172.16.20.41/24"
 ]
 
-lxcImageUrl  = "http://download.proxmox.com/images/system/rockylinux-9-default_20221109_amd64.tar.xz"
-lxcImageType = "centos"
-
-publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPN4kOiyt9uHJAeE5CSlDe970yd8tTVherHD2LZ0c1uy"
+lxcImageUrl  = "http://download.proxmox.com/images/system/alpine-3.21-default_20241217_amd64.tar.xz"
+lxcImageType = "alpine"
+publicKey    = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPN4kOiyt9uHJAeE5CSlDe970yd8tTVherHD2LZ0c1uy"

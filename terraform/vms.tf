@@ -39,12 +39,16 @@ resource "proxmox_virtual_environment_vm" "control_nodes" {
     datastore_id = "local-lvm"
     ip_config {
       ipv4 {
-        address = "${var.controlNodeIps[count.index]}/16"
+        address = var.controlNodeIps[count.index]
         gateway = var.gatewayIp
       }
       ipv6 {
         address = "dhcp"
       }
+    }
+    dns {
+      domain  = var.domainName
+      servers = [var.gatewayIp]
     }
   }
 }
@@ -57,6 +61,7 @@ resource "proxmox_virtual_environment_vm" "worker_nodes" {
   tags        = ["terraform"]
   node_name   = var.proxmoxNodes[count.index]
   on_boot     = true
+  machine     = "q35"
 
   cpu {
     cores = 4
@@ -81,22 +86,34 @@ resource "proxmox_virtual_environment_vm" "worker_nodes" {
     file_format  = "raw"
     interface    = "virtio0"
     size         = 20
+    ssd          = true
   }
 
   operating_system {
     type = "l26" # Linux Kernel 2.6 - 5.X.
   }
 
+  hostpci {
+    device = "hostpci0"
+    id     = "0000:00:02.0"
+    pcie   = true
+    xvga   = true
+  }
+
   initialization {
     datastore_id = "local-lvm"
     ip_config {
       ipv4 {
-        address = "${var.workerNodeIps[count.index]}/16"
+        address = var.workerNodeIps[count.index]
         gateway = var.gatewayIp
       }
       ipv6 {
         address = "dhcp"
       }
+    }
+    dns {
+      domain  = var.domainName
+      servers = [var.gatewayIp]
     }
   }
 }

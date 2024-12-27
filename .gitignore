@@ -2,7 +2,8 @@ secrets.auto.tfvars
 *tfstate*
 inventory.yaml
 .terraform*
-*.pem
 apps/pve-exporter/k8s-env.yaml
 apps/gitlab/k8s-secret.yaml
 apps/cilium/cilium.yaml
+talos/initial_config/
+proxy/certs/

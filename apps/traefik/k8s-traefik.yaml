@@ -2,6 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: traefik
+  namespace: argocd
 spec:
   destination:
     name: ''
@@ -10,7 +11,7 @@ spec:
   source:
     path: ''
     repoURL: https://traefik.github.io/charts
-    targetRevision: 33.0.0
+    targetRevision: 33.2.1
     chart: traefik
     helm:
       parameters:
