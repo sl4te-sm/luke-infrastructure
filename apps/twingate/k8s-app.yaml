@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: twingate
+  namespace: argocd
+spec:
+  destination:
+    name: ''
+    namespace: twingate
+    server: https://kubernetes.default.svc
+  source:
+    path: ''
+    repoURL: https://twingate.github.io/helm-charts
+    targetRevision: 0.1.29
+    chart: connector
+    helm:
+      parameters:
+        - name: connector.network
+          value: dummy
+        - name: connector.accessToken
+          value: dummy
+        - name: connector.refreshToken
+          value: dummy
+  sources: []
+  project: default
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+
