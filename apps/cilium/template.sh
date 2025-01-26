@@ -12,4 +12,5 @@ helm template \
     --set cgroup.autoMount.enabled=false \
     --set cgroup.hostRoot=/sys/fs/cgroup \
     --set k8sServiceHost=localhost \
-    --set k8sServicePort=7445 > cilium.yaml
+    --set localRedirectPolicy=true \
+    --set k8sServicePort=7445 > cilium2.yaml
