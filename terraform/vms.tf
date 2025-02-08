@@ -7,12 +7,12 @@ resource "proxmox_virtual_environment_vm" "control_nodes" {
   on_boot     = true
 
   cpu {
-    cores = 2
+    cores = 4
     type  = "x86-64-v2-AES"
   }
 
   memory {
-    dedicated = 2048
+    dedicated = 4096
   }
 
   agent {
@@ -69,7 +69,7 @@ resource "proxmox_virtual_environment_vm" "worker_nodes" {
   }
 
   memory {
-    dedicated = 10240
+    dedicated = 8192
   }
 
   agent {
@@ -86,7 +86,6 @@ resource "proxmox_virtual_environment_vm" "worker_nodes" {
     file_format  = "raw"
     interface    = "virtio0"
     size         = 20
-    ssd          = true
   }
 
   operating_system {
