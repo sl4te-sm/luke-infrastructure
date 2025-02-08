@@ -442,10 +442,8 @@ spec:
           name: nord-unbound
           ports:
             - containerPort: 53
-              hostPort: 53
               protocol: UDP
             - containerPort: 53
-              hostPort: 53
               protocol: TCP
           resources: {}
           volumeMounts:
