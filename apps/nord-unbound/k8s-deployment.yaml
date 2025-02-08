@@ -412,13 +412,14 @@ data:
       local-data: "luke-fliptop.luke-domain.com. A 172.16.30.163"
       local-data: "luke-proxytop-1.luke-domain.com. A 172.16.20.40"
       local-data: "luke-proxytop-2.luke-domain.com. A 172.16.20.41"
-      local-data: "*.services.luke-domain.com. A 172.16.20.42"
       local-data: "luke-controltop-1.luke-domain.com. A 172.16.20.20"
       local-data: "luke-controltop-2.luke-domain.com. A 172.16.20.21"
       local-data: "luke-controltop-3.luke-domain.com. A 172.16.20.22"
       local-data: "luke-kubetop-1.luke-domain.com. A 172.16.20.30"
       local-data: "luke-kubetop-2.luke-domain.com. A 172.16.20.31"
       local-data: "luke-kubetop-3.luke-domain.com. A 172.16.20.32"
+      local-zone: "services.luke-domain.com." redirect
+      local-data: "services.luke-domain.com. 86400 IN A 172.16.20.42"
 ---
 apiVersion: apps/v1
 kind: Deployment
