@@ -477,6 +477,8 @@ spec:
     - port: 53
       targetPort: 53
       protocol: UDP
+      name: DNS-UDP
     - port: 53
       targetPort: 53
       protocol: TCP
+      name: DNS-TCP
