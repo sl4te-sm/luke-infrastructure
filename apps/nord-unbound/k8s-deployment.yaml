@@ -454,9 +454,17 @@ spec:
             - name: unbound-a-conf-volume
               mountPath: /opt/unbound/etc/unbound/a-records.conf
               subPath: a-records.conf
-          envFrom:
-            - secretRef:
-                name: nord-unbound-secret
+          env:
+            - name: NORD_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: nord-unbound-secret
+                  key: NORD_TOKEN
+            - name: LOCAL_NETWORK
+              valueFrom:
+                secretKeyRef:
+                  name: nord-unbound-secret
+                  key: LOCAL_NETWORK
       restartPolicy: Always
       volumes:
         - name: unbound-main-conf-volume
