@@ -398,7 +398,6 @@ metadata:
   name: unbound-a-records-conf
 data:
   a-records.conf: | 
-    server:
       private-domain: "luke-domain.com"
       domain-insecure: "luke-domain.com"
       local-zone: "luke-domain.com" transparent
