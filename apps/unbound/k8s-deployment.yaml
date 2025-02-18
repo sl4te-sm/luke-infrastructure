@@ -444,6 +444,10 @@ spec:
       labels:
         name: unbound
     spec:
+      dnsConfig:
+        options:
+          - name: ndots
+            value: "1"
       containers:
         - image: mvance/unbound:latest
           imagePullPolicy: IfNotPresent
