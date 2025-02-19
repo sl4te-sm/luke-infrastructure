@@ -458,6 +458,8 @@ spec:
               protocol: TCP
           resources: {}
           volumeMounts:
+            - name: unbound-vol
+              mountPath: /opt/unbound/etc/unbound
             - name: unbound-main-conf-volume
               mountPath: /opt/unbound/etc/unbound/unbound.conf
               subPath: unbound.conf
@@ -466,6 +468,8 @@ spec:
               subPath: a-records.conf
       restartPolicy: Always
       volumes:
+        - name: unbound-vol
+          emptyDir: {}
         - name: unbound-main-conf-volume
           configMap:
             name: unbound-main-conf
