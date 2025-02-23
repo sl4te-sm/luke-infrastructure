@@ -2402,6 +2402,9 @@ spec:
             - name: unbound-a-records-volume
               mountPath: /etc/unbound/custom.conf.d/a-records.conf
               subPath: a-records.conf
+            - name: unbound-cachedb-volume
+              mountPath: /etc/unbound/custom.conf.d/cachedb.conf
+              subPath: cachedb.conf
             - name: redis-socket
               mountPath: /usr/local/unbound/cachedb.d
       initContainers:
@@ -2410,6 +2413,9 @@ spec:
           restartPolicy: Always
           command: ["redis-server"]
           args: ["/usr/local/etc/redis/redis.conf"]
+          securityContext:
+            runAsUser: 101
+            runAsGroup: 102
           volumeMounts:
             - mountPath: /data
               name: unbound-db
@@ -2433,6 +2439,9 @@ spec:
             name: redis-conf
         - name: redis-socket
           emptyDir: {}
+        - name: unbound-cachedb-volume
+          configMap:
+            name: unbound-cachedb-conf
 ---
 apiVersion: v1
 kind: Service
