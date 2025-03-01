@@ -31,6 +31,7 @@ data:
       local-data: "luke-kubetop-1.luke-domain.com IN A 172.16.20.30"
       local-data: "luke-kubetop-2.luke-domain.com IN A 172.16.20.31"
       local-data: "luke-kubetop-3.luke-domain.com IN A 172.16.20.32"
+      local-data: "ps5.luke-domain.com IN A 172.16.30.243"
       local-zone: "services.luke-domain.com." redirect
       local-data: "services.luke-domain.com. 86400 IN A 172.16.20.42"
 ---
