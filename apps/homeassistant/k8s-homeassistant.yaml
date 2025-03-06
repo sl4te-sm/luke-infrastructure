@@ -51,7 +51,7 @@ spec:
               containerPort: 8123
               protocol: TCP
             - name: mdns
-              containerPort: 21064
+              containerPort: 21063
               protocol: TCP
             - name: autodiscovery
               containerPort: 5353
