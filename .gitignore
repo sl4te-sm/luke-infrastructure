@@ -7,3 +7,4 @@ apps/gitlab/k8s-secret.yaml
 apps/cilium/cilium.yaml
 talos/initial_config/
 proxy/certs/
+k8s-secret.yaml

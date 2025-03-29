@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: blocky-log-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: blocky-log-db
+  template:
+    metadata:
+      labels:
+        name: blocky-log-db
+    spec:
+      containers:
+        - name: blocky-log-db
+          image: postgres:14
+          ports:
+            - containerPort: 5432
+          envFrom:
+            - secretRef:
+                name: blocky-postgres-creds
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: postgres-data
+      volumes:
+        - name: postgres-data
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: blocky-log-db
+spec:
+  selector:
+    name: blocky-log-db
+  type: ClusterIP
+  ports:
+    - port: 5432
+      name: postgres
+      targetPort: 5432

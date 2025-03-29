@@ -1,0 +1,112 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: blocky-config
+data:
+  config.yml: |
+    bootstrapDns:
+      - upstream: 103.86.96.100
+      - upstream: 103.86.99.100
+    upstreams:
+      groups:
+        default:
+          - 103.86.96.100
+          - 103.86.99.100
+    conditional:
+      fallbackUpstream: false
+      mapping:
+        luke-domain.com: 172.16.20.254
+    ports:
+      dns: 53
+      http: 4000
+    blocking:
+      denylists:
+        ads:
+          - https://gitlab.com/hagezi/mirror/-/raw/main/dns-blocklists/wildcard/ultimate.txt
+        security:
+          - https://gitlab.com/hagezi/mirror/-/raw/main/dns-blocklists/wildcard/tif.txt
+      allowlists:
+        ads:
+          - https://raw.githubusercontent.com/hagezi/dns-blocklists/refs/heads/main/share/facebook.txt
+          - https://raw.githubusercontent.com/hagezi/dns-blocklists/refs/heads/main/share/microsoft.txt
+      clientGroupsBlock:
+        default:
+          - ads
+          - security
+    redis:
+      address: blocky-cache:6379
+      connectionAttempts: 10
+      connectionCooldown: 3s
+    prometheus:
+      enable: true
+      path: /metrics
+    queryLog:
+      type: postgresql
+      target: 'postgres://blocky@blocky-log-db:5432/blocky'
+      logRetentionDays: 7
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: blocky
+spec:
+  selector:
+    matchLabels:
+      name: blocky
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: blocky
+    spec:
+      containers:
+        - name: blocky
+          image: spx01/blocky:latest
+          ports:
+            - containerPort: 53
+              protocol: TCP
+            - containerPort: 53
+              protocol: UDP
+            - containerPort: 4000
+              protocol: TCP
+          env:
+            - name: TZ
+              value: "America/Chicago"
+            - name: PGPASSFILE
+              value: /etc/pg-credentials/.pgpass
+          volumeMounts:
+            - mountPath: /app/config.yml
+              name: blocky-config
+              subPath: config.yml
+            - mountPath: /etc/pg-credentials
+              name: blocky-postgres-creds
+              readOnly: true
+      volumes:
+        - name: blocky-config
+          configMap:
+            name: blocky-config
+        - name: blocky-postgres-creds
+          secret:
+            secretName: blocky-postgres-pgpass
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: blocky
+spec:
+  selector:
+    name: blocky
+  type: NodePort
+  ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 4000
+      name: web
+    - port: 53
+      protocol: TCP
+      targetPort: 53
+      name: dns-tcp
+    - port: 53
+      protocol: UDP
+      targetPort: 53
+      name: dns-udp
