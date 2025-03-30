@@ -50,10 +50,10 @@ kind: Deployment
 metadata:
   name: blocky
 spec:
+  replicas: 3
   selector:
     matchLabels:
       name: blocky
-  replicas: 1
   template:
     metadata:
       labels:
