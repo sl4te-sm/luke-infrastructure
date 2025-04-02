@@ -102,12 +102,15 @@ apiVersion: v1
 kind: Service
 metadata:
   name: blocky
+  labels:
+    app.kubernetes.io/instance: blocky
+    app.kubernetes.io/name: blocky
 spec:
   selector:
     name: blocky
   type: NodePort
   ports:
-    - port: 80
+    - port: 4000
       protocol: TCP
       targetPort: 4000
       name: web
