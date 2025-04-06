@@ -1,0 +1,150 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+    kubernetes.io/metadata.name: kube-prometheus-stack
+    pod-security.kubernetes.io/enforce: privileged
+  name: kube-prometheus-stack
+spec:
+  finalizers:
+  - kubernetes
+
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kube-prometheus-stack
+  namespace: argocd
+spec:
+  destination:
+    name: ''
+    namespace: kube-prometheus-stack
+    server: https://kubernetes.default.svc
+  source:
+    path: ''
+    repoURL: https://prometheus-community.github.io/helm-charts
+    targetRevision: 67.5.0
+    chart: kube-prometheus-stack
+    helm:
+      valuesObject:
+        alertmanager:
+          alertmanagerSpec:
+            storage:
+              volumeClaimTemplate:
+                spec:
+                  storageClassName: local-path
+                  accessModes:
+                    - ReadWriteOnce
+                  resources:
+                    requests:
+                      storage: 1Gi
+            affinity:
+              nodeAffinity:
+                requiredDuringSchedulingIgnoredDuringExecution:
+                  nodeSelectorTerms:
+                    - matchExpressions:
+                      - key: target
+                        operator: In
+                        values:
+                          - monitoring
+        crds:
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                  - matchExpressions:
+                    - key: target
+                      operator: In
+                      values:
+                        - monitoring
+        prometheusOperator:
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                  - matchExpressions:
+                    - key: target
+                      operator: In
+                      values:
+                        - monitoring
+        prometheus:
+          prometheusSpec:
+            affinity:
+              nodeAffinity:
+                requiredDuringSchedulingIgnoredDuringExecution:
+                  nodeSelectorTerms:
+                    - matchExpressions:
+                      - key: target
+                        operator: In
+                        values:
+                          - monitoring
+            storageSpec:
+              volumeClaimTemplate:
+                spec:
+                  storageClassName: local-path
+                  accessModes:
+                    - ReadWriteOnce
+                  resources:
+                    requests:
+                      storage: 1Gi
+        grafana:
+          persistence:
+            enabled: true
+            type: pvc
+            storageClassName: local-path
+            accessModes:
+              - ReadWriteOnce
+            size: 3Gi
+            finalizers:
+              - kubernetes.io/pvc-protection
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                  - matchExpressions:
+                    - key: target
+                      operator: In
+                      values:
+                        - monitoring
+          env:
+            GF_PANELS_DISABLE_SANITIZE_HTML: true
+  sources: []
+  project: default
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: kube-prometheus-stack-prometheus
+  namespace: kube-prometheus-stack
+spec:
+  entryPoints:
+    - web
+  routes:
+    - kind: Rule
+      match: Host(`prometheus.services.luke-domain.com`)
+      priority: 10
+      services:
+        - name: kube-prometheus-stack-prometheus
+          port: 9090
+
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: kube-prometheus-stack-grafana
+  namespace: kube-prometheus-stack
+spec:
+  entryPoints:
+    - web
+  routes:
+    - kind: Rule
+      match: Host(`grafana.services.luke-domain.com`)
+      priority: 10
+      services:
+        - name: kube-prometheus-stack-grafana
+          port: 80
