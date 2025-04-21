@@ -11,19 +11,16 @@ spec:
   source:
     path: ''
     repoURL: https://twingate.github.io/helm-charts
-    targetRevision: 0.1.29
+    targetRevision: 0.1.31
     chart: connector
     helm:
       parameters:
         - name: connector.network
-          value: dummy
-        - name: connector.accessToken
-          value: dummy
-        - name: connector.refreshToken
-          value: dummy
+          value: lxct8n3r
+        - name: connector.existingSecret
+          value: twingate-creds
   sources: []
   project: default
   syncPolicy:
     syncOptions:
       - CreateNamespace=true
-
