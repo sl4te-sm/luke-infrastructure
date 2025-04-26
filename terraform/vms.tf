@@ -66,10 +66,12 @@ resource "proxmox_virtual_environment_vm" "worker_nodes" {
   cpu {
     cores = 4
     type  = "x86-64-v2-AES"
+    numa  = true
   }
 
   memory {
     dedicated = 8192
+    hugepages = 2
   }
 
   agent {
@@ -85,6 +87,13 @@ resource "proxmox_virtual_environment_vm" "worker_nodes" {
     file_id      = proxmox_virtual_environment_download_file.talos_nocloud_image[count.index].id
     file_format  = "raw"
     interface    = "virtio0"
+    size         = 20
+  }
+
+  disk {
+    datastore_id = "local-lvm"
+    interface    = "virtio1"
+    file_format  = "raw"
     size         = 20
   }
 

@@ -72,6 +72,7 @@ resource "proxmox_virtual_environment_user" "proxmox-exporter" {
 }
 
 resource "proxmox_virtual_environment_user_token" "proxmox-exporter-token" {
-  token_name = "proxmox-exporter"
-  user_id    = proxmox_virtual_environment_user.proxmox-exporter.user_id
+  token_name            = "proxmox-exporter"
+  user_id               = proxmox_virtual_environment_user.proxmox-exporter.user_id
+  privileges_separation = false
 }
