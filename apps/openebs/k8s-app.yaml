@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+    kubernetes.io/metadata.name: openebs
+    pod-security.kubernetes.io/enforce: privileged
+  name: openebs
+spec:
+  finalizers:
+  - kubernetes
+
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: openebs
+  namespace: argocd
+spec:
+  destination:
+    name: ''
+    namespace: openebs
+    server: https://kubernetes.default.svc
+  source:
+    path: ''
+    repoURL: https://openebs.github.io/openebs
+    targetRevision: 4.2.0
+    chart: openebs
+    helm:
+      valuesObject:
+        mayastor:
+          csi:
+            node:
+              initContainers:
+                enabled: false
+        engines:
+          local:
+            lvm:
+              enabled: false
+            zfs:
+              enabled: false
+  sources: []
+  project: default
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true

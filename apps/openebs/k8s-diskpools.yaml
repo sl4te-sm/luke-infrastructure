@@ -1,0 +1,40 @@
+apiVersion: "openebs.io/v1beta2"
+kind: DiskPool
+metadata:
+  name: luke-kubetop-1-pool
+  namespace: openebs
+spec:
+  node: luke-kubetop-1
+  disks:
+    - uring:///dev/vdb
+  topology:
+    labelled:
+      topology-key: topology-value
+
+---
+apiVersion: "openebs.io/v1beta2"
+kind: DiskPool
+metadata:
+  name: luke-kubetop-2-pool
+  namespace: openebs
+spec:
+  node: luke-kubetop-2
+  disks:
+    - uring:///dev/vdb
+  topology:
+    labelled:
+      topology-key: topology-value
+
+---
+apiVersion: "openebs.io/v1beta2"
+kind: DiskPool
+metadata:
+  name: luke-kubetop-3-pool
+  namespace: openebs
+spec:
+  node: luke-kubetop-3
+  disks:
+    - uring:///dev/vdb
+  topology:
+    labelled:
+      topology-key: topology-value
