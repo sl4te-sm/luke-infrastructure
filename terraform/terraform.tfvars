@@ -15,7 +15,7 @@ lxcContainers = [
 domainName      = "luke-domain.com"
 dnsServerIp     = ["172.16.20.254"]
 gatewayIp       = "172.16.20.254"
-proxmoxEndpoint = "https://proxmox.services.luke-domain.com"
+proxmoxEndpoint = "https://proxmox.luke-domain.com"
 bucketLocation  = "us-central1"
 controlNodes = [
   "luke-controltop-1",

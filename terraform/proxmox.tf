@@ -14,7 +14,7 @@ data "google_secret_manager_secret_version" "proxmox-key" {
   count    = length(var.proxmoxNodes)
   provider = google
   secret   = "luke-vmtop-${count.index + 1}-key"
-  version  = "1"
+  version  = "2"
 }
 
 resource "proxmox_virtual_environment_certificate" "ssl_cert" {
