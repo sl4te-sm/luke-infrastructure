@@ -3,7 +3,7 @@
 helm template \
     cilium \
     cilium/cilium \
-    --version 1.16.3 \
+    --version 1.17.3 \
     --namespace kube-system \
     --set ipam.mode=kubernetes \
     --set kubeProxyReplacement=true \
@@ -13,4 +13,10 @@ helm template \
     --set cgroup.hostRoot=/sys/fs/cgroup \
     --set k8sServiceHost=localhost \
     --set localRedirectPolicy=true \
+    --set gatewayAPI.enabled=true \
+    --set gatewayAPI.enableAlpn=true \
+    --set gatewayAPI.enableAppProtocol=true \
+    --set gatewayAPI.hostNetwork.enabled=true \
+    --set envoy.securityContext.capabilities.keepCapNetBindService=true \
+    --set envoy.securityContext.capabilities.envoy="{NET_BIND_SERVICE,NET_ADMIN,PERFMON,BPF}"\
     --set k8sServicePort=7445 > cilium2.yaml
