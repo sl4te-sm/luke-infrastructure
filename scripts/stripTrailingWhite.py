@@ -5,11 +5,16 @@ if len(sys.argv) != 2:
     sys.exit(1)
 # Define the input and output file paths
 input_file = sys.argv[1]
-output_file = "output.txt"  # File to save the modified content
 
 # Open the input file for reading and the output file for writing
 with open(input_file, 'r') as file:
     lines = file.readlines()
+
+# Remove leading and trailing blank lines
+while lines and lines[0].strip() == '':
+    lines.pop(0)
+while lines and lines[-1].strip() == '':
+    lines.pop()
 
 with open(input_file, 'w') as file:
     for line in lines:
