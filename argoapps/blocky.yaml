@@ -11,7 +11,7 @@ spec:
   source:
     path: apps/blocky
     repoURL: https://gitlab.com/grayskull757/proxmox-cluster.git
-    targetRevision: HEAD
+    targetRevision: 1.0.0
   syncPolicy:
     automated:
       selfHeal: true
