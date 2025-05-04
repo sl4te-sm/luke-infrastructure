@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: gitlab-agent
+  namespace: argocd
+spec:
+  destination:
+    name: ''
+    namespace: gitlab
+    server: https://kubernetes.default.svc
+  source:
+    path: ''
+    repoURL: https://charts.gitlab.io
+    targetRevision: 2.14.1
+    chart: gitlab-agent
+    helm:
+      valuesObject:
+        config:
+          kasAddress: wss://kas.gitlab.com
+          secretName: gitlab-agent-token
+  sources: []
+  project: default
+  syncPolicy:
+    automated: null
+    syncOptions:
+      - CreateNamespace=false
