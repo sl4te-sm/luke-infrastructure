@@ -1,0 +1,20 @@
+stages:
+  - update_latest_tag
+
+update_latest_tag:
+  stage: update_latest_tag
+  script:
+    - echo "Verify merge to main"
+    - if [ "$CI_COMMIT_BRANCH" == "main" ]; then
+        echo "Migrating latest tag..."
+        git config --global user.email "codesign@mail.luke-domain.com";
+        git config --global user.name "CI Bot:";
+        git tag -d latest || true;
+        git push origin :refs/tags/latest || true;
+        git tag -a latest -m "Migrating latest tag";
+        git push origin latest;
+      else
+        echo "Not on main branch. Skipping."
+      fi
+  only:
+    - main
