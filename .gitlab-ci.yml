@@ -4,6 +4,7 @@ stages:
 update_latest_tag:
   stage: update_latest_tag
   script:
+    - apt-get update && apt-get install -y git
     - echo "Verify merge to main"
     - if [ "$CI_COMMIT_BRANCH" == "main" ]; then
         echo "Migrating latest tag..."
