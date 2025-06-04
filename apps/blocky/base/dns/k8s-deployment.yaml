@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: blocky
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      name: blocky
+  template:
+    metadata:
+      labels:
+        name: blocky
+    spec:
+      containers:
+        - name: blocky
+          image: spx01/blocky:latest
+          ports:
+            - containerPort: 53
+              protocol: TCP
+            - containerPort: 53
+              protocol: UDP
+            - containerPort: 4000
+              protocol: TCP
+          env:
+            - name: TZ
+              value: "America/Chicago"
+            - name: PGPASSFILE
+              value: /etc/pg-credentials/.pgpass
+          volumeMounts:
+            - mountPath: /app/config.yml
+              name: blocky-config
+              subPath: config.yml
+            - mountPath: /etc/pg-credentials
+              name: blocky-postgres-creds
+              readOnly: true
+      volumes:
+        - name: blocky-config
+          configMap:
+            name: blocky-config
+        - name: blocky-postgres-creds
+          secret:
+            secretName: blocky-postgres-pgpass
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                topologyKey: "kubernetes.io/hostname"
+                labelSelector:
+                  matchLabels:
+                    name: blocky

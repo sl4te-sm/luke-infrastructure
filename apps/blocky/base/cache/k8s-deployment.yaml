@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: blocky-cache
+spec:
+  selector:
+    matchLabels:
+      name: blocky-cache
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: blocky-cache
+    spec:
+      containers:
+        - name: blocky-cache
+          image: redis:latest
+          command: ["redis-server"]
+          args:
+            - "/usr/local/etc/redis/redis.conf"
+            - "--protected-mode"
+            - "no"
+          ports:
+            - containerPort: 6379
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /data
+              name: cache-db
+            - mountPath: /usr/local/etc/redis/redis.conf
+              name: redis-config
+              subPath: redis.conf
+      volumes:
+        - name: cache-db
+          emptyDir: {}
+        - name: redis-config
+          configMap:
+            name: redis-config
