@@ -9,9 +9,9 @@ spec:
     server: https://kubernetes.default.svc
   project: default
   source:
-    path: apps/blocky
+    path: apps/blocky/overlays/prod
     repoURL: https://gitlab.com/grayskull757/proxmox-cluster.git
-    targetRevision: 1.0.0
+    targetRevision: 1.1.0
   syncPolicy:
     automated:
       selfHeal: true
