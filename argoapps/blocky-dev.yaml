@@ -1,0 +1,17 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: blocky-dev
+  namespace: argocd
+spec:
+  destination:
+    namespace: blocky-dev
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: apps/blocky/overlays/dev
+    repoURL: https://gitlab.com/grayskull757/proxmox-cluster.git
+    targetRevision: kustomize
+  syncPolicy:
+    automated:
+      selfHeal: true
