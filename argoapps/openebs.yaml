@@ -23,7 +23,7 @@ spec:
   source:
     path: ''
     repoURL: https://openebs.github.io/openebs
-    targetRevision: 4.2.0
+    targetRevision: 4.3.2
     chart: openebs
     helm:
       valuesObject:
@@ -43,6 +43,7 @@ spec:
   syncPolicy:
     syncOptions:
       - CreateNamespace=true
+      - ServerSideApply=true
 
 ---
 apiVersion: storage.k8s.io/v1

@@ -11,7 +11,7 @@ spec:
   source:
     path: ''
     repoURL: https://starttoaster.github.io/proxmox-exporter
-    targetRevision: 0.2.3
+    targetRevision: 0.2.8
     chart: proxmox-exporter
     helm:
       parameters:
