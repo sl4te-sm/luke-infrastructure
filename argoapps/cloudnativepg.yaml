@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cloudnativepg
+  namespace: argocd
+spec:
+  destination:
+    name: ""
+    namespace: cnpg-system
+    server: https://kubernetes.default.svc
+  source:
+    path: ""
+    repoURL: https://cloudnative-pg.github.io/charts
+    targetRevision: 0.25.0
+    chart: cloudnative-pg
+  sources: []
+  project: default
+  syncPolicy:
+    automated: null
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
