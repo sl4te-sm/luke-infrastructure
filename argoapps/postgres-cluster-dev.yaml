@@ -1,0 +1,17 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: postgres-cluster-dev
+  namespace: argocd
+spec:
+  destination:
+    namespace: postgres-cluster-dev
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: apps/postgresql/overlays/dev
+    repoURL: https://github.com/sl4te-sm/luke-infrastructure.git
+    targetRevision: latest
+  syncPolicy:
+    automated:
+      selfHeal: true

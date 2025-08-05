@@ -1,0 +1,35 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: postgres-cluster
+spec:
+  instances: 3
+  imageName: ghcr.io/cloudnative-pg/postgresql:17.5-minimal-bookworm
+  bootstrap:
+    initdb:
+      database: test
+      owner: test-user
+      secret:
+        name: test-user-secret
+  storage:
+    size: 5Gi
+    storageClass: openebs-single-replica
+  primaryUpdateStrategy: unsupervised
+  resources:
+    requests:
+      cpu: 250m
+      memory: 512Mi
+    limits:
+      cpu: 500m
+      memory: 1Gi
+  postgresql:
+    parameters:
+      timezone: "America/Chicago"
+  affinity:
+    enablePodAntiAffinity: true
+    topologyKey: kubernetes.io/hostname
+  enableSuperuserAccess: true
+  superuserSecret:
+    name: postgres-admin-secret
+  monitoring:
+    enablePodMonitor: true
