@@ -1,5 +1,7 @@
 name: Tag Latest
 on: [push]
+permissions:
+  contents: write
 
 jobs:
   tag-latest-push:
@@ -18,6 +20,10 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.TAG_SECRET }}
         run: |
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git remote set-url origin https://x-access-token:${{ secrets.TAG_SECRET }}@github.com/sl4te-sm/luke-infrastructure.git
           latest_sha=$(git rev-parse HEAD)
           tag_ref=$(git ls-remote origin refs/tags/latest | cut -f 1)
 
