@@ -1,0 +1,39 @@
+name: Tag Latest
+on: [push]
+permissions:
+  contents: write
+
+jobs:
+  tag-latest-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Get latest commit timestamp
+        run: echo "TIMESTAMP=$(git show -s --format=%ct HEAD)" >> $GITHUB_ENV
+
+      - name: Compare and retag if newest
+        env:
+          GH_TOKEN: ${{ secrets.TAG_SECRET }}
+        run: |
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git remote set-url origin https://x-access-token:${{ secrets.TAG_SECRET }}@github.com/sl4te-sm/luke-infrastructure.git
+          latest_sha=$(git rev-parse HEAD)
+          tag_ref=$(git ls-remote origin refs/tags/latest | cut -f 1)
+
+          if [ -n "$tag_ref" ]; then
+            tag_commit_time=$(git show -s --format=%ct "$tag_ref")
+            if [ "$TIMESTAMP" -le "$tag_commit_time" ]; then
+              echo "Not the latest push. Skipping tag update."
+              exit 0
+            fi
+          fi
+
+          git tag -f latest "$latest_sha"
+          git push origin --force --tags
