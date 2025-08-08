@@ -10,8 +10,8 @@ commonLabels:
 nameSuffix: -dev
 images:
   - name: redis
-    newTag: latest
+    newTag: 8.2.0-alpine
   - name: postgres
-    newTag: "14"
+    newTag: 17.5-alpine
   - name: blocky
-    newTag: latest
+    newTag: v0.26.2

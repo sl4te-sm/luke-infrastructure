@@ -16,6 +16,8 @@ data:
       fallbackUpstream: false
       mapping:
         luke-domain.com: 172.16.20.254
+        cluster.local: 10.96.0.10
+        svc.cluster.local: 10.96.0.10
     ports:
       dns: 53
       http: 4000

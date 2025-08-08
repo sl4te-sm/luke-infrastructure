@@ -17,8 +17,10 @@ spec:
           image: spx01/blocky:latest
           ports:
             - containerPort: 53
+              hostPort: 53
               protocol: TCP
             - containerPort: 53
+              hostPort: 53
               protocol: UDP
             - containerPort: 4000
               protocol: TCP
@@ -34,6 +36,11 @@ spec:
             - mountPath: /etc/pg-credentials
               name: blocky-postgres-creds
               readOnly: true
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              add:
+                - NET_BIND_SERVICE
       volumes:
         - name: blocky-config
           configMap:
@@ -43,10 +50,8 @@ spec:
             secretName: blocky-postgres-pgpass
       affinity:
         podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - weight: 100
-              podAffinityTerm:
-                topologyKey: "kubernetes.io/hostname"
-                labelSelector:
-                  matchLabels:
-                    name: blocky
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - topologyKey: "kubernetes.io/hostname"
+              labelSelector:
+                matchLabels:
+                  name: blocky
