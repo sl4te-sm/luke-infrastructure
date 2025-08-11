@@ -12,5 +12,5 @@ images:
     newTag: 8.2.0-alpine
   - name: postgres
     newTag: 17.5-alpine
-  - name: blocky
+  - name: spx01/blocky
     newTag: v0.26.2
