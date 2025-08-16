@@ -9,3 +9,5 @@ talos/initial_config/
 proxy/certs/
 k8s-secret.yaml
 cilium2.yaml
+secrets.yaml
+secret.yaml
