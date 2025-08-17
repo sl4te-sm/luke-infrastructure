@@ -5,10 +5,15 @@ metadata:
   labels:
     app.kubernetes.io/instance: blocky
     app.kubernetes.io/name: blocky
+    advertise: "bgp"
+  annotations:
+    service.cilium.io/affinity: "local"
 spec:
   selector:
     name: blocky
-  type: NodePort
+  type: LoadBalancer
+  externalTrafficPolicy: Local
+  ipFamilies: [IPV4]
   ports:
     - port: 4000
       protocol: TCP

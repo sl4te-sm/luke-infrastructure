@@ -10,7 +10,5 @@ labels:
       app.kubernetes.io/managed-by: argocd
     includeTemplates: true
 images:
-  - name: redis
-    newTag: 8.2.0-alpine
   - name: spx01/blocky
     newTag: v0.26.2

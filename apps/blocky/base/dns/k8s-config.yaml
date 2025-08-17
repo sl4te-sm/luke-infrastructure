@@ -16,6 +16,9 @@ data:
       fallbackUpstream: false
       mapping:
         luke-domain.com: 172.16.20.254
+        16.172.in-addr.arpa: 172.16.20.254
+    clientLookup:
+      upstream: 172.16.20.254
     ports:
       dns: 53
       http: 4000
@@ -37,6 +40,7 @@ data:
       address: blocky-cache:6379
       connectionAttempts: 10
       connectionCooldown: 3s
+      required: true
     prometheus:
       enable: true
       path: /metrics
