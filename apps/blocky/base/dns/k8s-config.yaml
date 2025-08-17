@@ -42,5 +42,5 @@ data:
       path: /metrics
     queryLog:
       type: postgresql
-      target: 'postgres://blocky@blocky-log-db:5432/blocky'
+      target: 'postgres://blocky@blocky-log-db-rw:5432/blocky'
       logRetentionDays: 7

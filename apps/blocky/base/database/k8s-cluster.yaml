@@ -1,0 +1,32 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: blocky-log-db
+spec:
+  instances: 3
+  imageName: ghcr.io/cloudnative-pg/postgresql:17.5-minimal-bookworm
+  bootstrap:
+    initdb:
+      database: blocky
+      owner: blocky
+      secret:
+        name: blocky-postgres-secret
+  storage:
+    size: 1Gi
+    storageClass: openebs-single-replica
+  primaryUpdateStrategy: unsupervised
+  resources:
+    requests:
+      cpu: 250m
+      memory: 512Mi
+    limits:
+      cpu: 500m
+      memory: 1Gi
+  postgresql:
+    parameters:
+      timezone: "America/Chicago"
+  affinity:
+    enablePodAntiAffinity: true
+    topologyKey: kubernetes.io/hostname
+  monitoring:
+    enablePodMonitor: true

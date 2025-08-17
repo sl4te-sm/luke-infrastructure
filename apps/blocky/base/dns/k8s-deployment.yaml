@@ -17,6 +17,13 @@ spec:
       labels:
         name: blocky
     spec:
+      initContainers:
+        - name: check-log-db
+          image: busybox
+          command:
+            - "sh"
+            - "-c"
+            - "until nc -z blocky-log-db-rw 5432; do echo 'Waiting for db'; sleep 2; done",
       containers:
         - name: blocky
           image: spx01/blocky:latest
