@@ -23,7 +23,7 @@ spec:
           command:
             - "sh"
             - "-c"
-            - "until nc -z blocky-log-db-rw 5432; do echo 'Waiting for db'; sleep 2; done",
+            - "until nc -z blocky-log-db-rw 5432; do echo 'Waiting for db'; sleep 2; done"
       containers:
         - name: blocky
           image: spx01/blocky:latest
