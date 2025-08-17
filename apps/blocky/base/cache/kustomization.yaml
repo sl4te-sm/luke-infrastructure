@@ -4,8 +4,11 @@ resources:
   - k8s-config.yaml
   - k8s-deployment.yaml
   - k8s-service.yaml
-commonLabels:
-  app.kubernetes.io/name: redis
-  app.kubernetes.io/instance: redis-blocky-dns
-  app.kubernetes.io/version: 7.4.3-alpine
-  app.kubernetes.io/component: cache
+labels:
+  - pairs:
+      app.kubernetes.io/name: redis
+      app.kubernetes.io/instance: redis-blocky-dns
+      app.kubernetes.io/version: 7.4.3-alpine
+      app.kubernetes.io/component: cache
+    includeSelectors: true
+    includeTemplates: true

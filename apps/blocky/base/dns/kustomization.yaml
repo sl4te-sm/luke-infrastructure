@@ -5,8 +5,11 @@ resources:
   - k8s-service.yaml
   - k8s-config.yaml
   - k8s-service-monitor.yaml
-commonLabels:
-  app.kubernetes.io/name: blocky
-  app.kubernetes.io/instance: blocky-blocky-dns
-  app.kubernetes.io/version: v0.25
-  app.kubernetes.io/component: dns
+labels:
+  - pairs:
+      app.kubernetes.io/name: blocky
+      app.kubernetes.io/instance: blocky-blocky-dns
+      app.kubernetes.io/version: v0.25
+      app.kubernetes.io/component: dns
+    includeTemplates: true
+    includeSelectors: true
