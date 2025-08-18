@@ -11,4 +11,4 @@ spec:
   source:
     path: apps/homeassistant
     repoURL: https://gitlab.com/grayskull757/proxmox-cluster.git
-    targetRevision: 1.0.0
+    targetRevision: v1.3.0
