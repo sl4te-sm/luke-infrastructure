@@ -10,5 +10,5 @@ spec:
   project: default
   source:
     path: apps/homeassistant
-    repoURL: https://gitlab.com/grayskull757/proxmox-cluster.git
-    targetRevision: v1.3.0
+    repoURL: https://github.com/sl4te-sm/luke-infrastructure.git
+    targetRevision: v1.3.1
