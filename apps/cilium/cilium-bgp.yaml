@@ -1,0 +1,67 @@
+apiVersion: cilium.io/v2
+kind: CiliumLoadBalancerIPPool
+metadata:
+  name: service-pool
+spec:
+  blocks:
+    - cidr: 172.17.20.80/29
+
+---
+apiVersion: cilium.io/v2
+kind: CiliumBGPPeerConfig
+metadata:
+  name: opnsense-ebgp
+spec:
+  families:
+    - afi: ipv4
+      safi: unicast
+      advertisements:
+        matchLabels:
+          advertise: "bgp"
+  ebgpMultihop: 1
+  timers:
+    connectRetryTimeSeconds: 5
+    holdTimeSeconds: 9
+    keepAliveTimeSeconds: 3
+  gracefulRestart:
+    enabled: true
+    restartTimeSeconds: 15
+
+---
+apiVersion: cilium.io/v2
+kind: CiliumBGPClusterConfig
+metadata:
+  name: workers-opnsense
+spec:
+  nodeSelector:
+    matchLabels:
+      io.cilium/bgp: worker
+  bgpInstances:
+    - name: default
+      localASN: 65000
+      peers:
+        - name: opnsense
+          peerASN: 65001
+          peerAddress: 172.16.20.254
+          peerConfigRef:
+            name: opnsense-ebgp
+
+---
+apiVersion: cilium.io/v2
+kind: CiliumBGPAdvertisement
+metadata:
+  name: advertise-all-lb
+  labels:
+    advertise: "bgp"
+spec:
+  advertisements:
+    - advertisementType: "Service"
+      attributes:
+        communities:
+          standard: ["65000:100"]
+      service:
+        addresses:
+          - LoadBalancerIP
+      selector:
+        matchLabels:
+          advertise: "bgp"

@@ -1,10 +1,12 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - k8s-deployment.yaml
-  - k8s-service.yaml
-commonLabels:
-  app.kubernetes.io/name: postgres
-  app.kubernetes.io/instance: postgres-blocky-dns
-  app.kubernetes.io/version: 17.4-alpine3.21
-  app.kubernetes.io/component: database
+  - k8s-cluster.yaml
+labels:
+  - pairs:
+      app.kubernetes.io/name: postgres
+      app.kubernetes.io/instance: postgres-blocky-dns
+      app.kubernetes.io/version: 17.5-minimal-bookworm
+      app.kubernetes.io/component: database
+    includeSelectors: true
+    includeTemplates: true

@@ -4,14 +4,11 @@ resources:
   - ../../base/dns
   - ../../base/cache
   - ../../base/database
-commonLabels:
-  app.kubernetes.io/part-of: blocky-dns-dev
-  app.kubernetes.io/managed-by: argocd
-nameSuffix: -dev
+labels:
+  - pairs:
+      app.kubernetes.io/part-of: blocky-dns-dev
+      app.kubernetes.io/managed-by: argocd
+    includeTemplates: true
 images:
-  - name: redis
-    newTag: latest
-  - name: postgres
-    newTag: "14"
-  - name: blocky
-    newTag: latest
+  - name: spx01/blocky
+    newTag: v0.26.2
