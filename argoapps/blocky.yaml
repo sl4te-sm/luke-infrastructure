@@ -10,8 +10,8 @@ spec:
   project: default
   source:
     path: apps/blocky/overlays/prod
-    repoURL: https://gitlab.com/grayskull757/proxmox-cluster.git
-    targetRevision: 1.1.0
+    repoURL: https://github.com/sl4te-sm/luke-infrastructure.git
+    targetRevision: v1.2.1
   syncPolicy:
     automated:
       selfHeal: true
