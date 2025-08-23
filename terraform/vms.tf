@@ -70,7 +70,7 @@ resource "proxmox_virtual_environment_vm" "worker_nodes" {
   }
 
   memory {
-    dedicated = 8192
+    dedicated = 24576
     hugepages = 2
   }
 
